@@ -1,4 +1,4 @@
-package com.example.PregnantPal
+package com.example.pregnantpal
 
 import org.junit.Test
 

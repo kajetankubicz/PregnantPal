@@ -1,14 +1,3 @@
 <resources>
     <string name="app_name">PregnantPal</string>
-    <string name="name">Name</string>
-    <string name="surname">Surname</string>
-    <string name="phone_number">Phone Number</string>
-    <string name="save">Save</string>
-    <string name="childNum">How many children do you plan to have? </string>
-    <string name="whenBirth">When is your due date?</string>
-    <string name="height">How tall are you? [cm]</string>
-    <string name="weight">How much you weigh? [kg]</string>
-    <string name="smoke">Do you smoke? If so how much [cigarettes per week]</string>
-    <string name="drink">Do you drink? If so how much [grams of alcohol per week]</string>
-    <string name="examination">When was the last time you went for examination?</string>
 </resources>
