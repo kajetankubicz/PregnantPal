@@ -17,9 +17,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
 import com.example.pregnantpal.screen.Navigation.Screens
@@ -72,7 +74,7 @@ fun MainScreen(
                         onClick = { expanded.value = true },
                         modifier = Modifier.padding(end = 8.dp)
                     ) {
-                        Icon(Icons.Filled.MoreVert, contentDescription = "Menu")
+                        Icon(Icons.Filled.Settings, contentDescription = "Menu")
                     }
 
 
@@ -139,7 +141,7 @@ fun MainScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top=80.dp, start = 40.dp, end = 20.dp, bottom = 20.dp)
+                    .padding(top = 80.dp, start = 40.dp, end = 20.dp, bottom = 20.dp)
             ) {
                 Text(
                     text = "Projekt grupowy 10@KIBI'2023",
@@ -195,3 +197,10 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
         }
     }
 }
+
+/*
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview(){
+    MainScreen(Screens.MainScreen.name)
+}*/
