@@ -33,19 +33,12 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import com.example.pregnantpal.Pickle.RandomForestClassifier
 import com.example.pregnantpal.model.MaternalData
 import com.example.pregnantpal.R
 import com.example.pregnantpal.components.addButton
 import com.example.pregnantpal.components.textInput
 import com.google.gson.Gson
-import org.json.JSONArray
-import org.json.JSONObject
-import java.io.ByteArrayInputStream
 import java.io.File
-import java.io.FileWriter
-import java.io.ObjectInputStream
-import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -953,64 +946,6 @@ fun PregnantPalScreen(
                         }else{
                             Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
                         }
-
-                    })
-            }
-
-            //Predict
-            item {
-                addButton(
-
-                    text = "Save data",
-                    onClick = {
-                            // Load the pickled model from the raw resource
-                            val modelInputStream = context.resources.openRawResource(R.raw.random_forest_all)
-                            val modelBytes = modelInputStream.readBytes()
-                            val ois = ObjectInputStream(ByteArrayInputStream(modelBytes))
-                            val model = ois.readObject() as RandomForestClassifier
-                            ois.close()
-
-                            // Load the test data from a JSON file
-                            val folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                            val testDataFile = File("$folder/data.json")
-                            val testDataJson = testDataFile.readText()
-                            val testDataMap = Gson().fromJson(testDataJson, Map::class.java) as Map<String, Any>
-
-                            val testData = floatArrayOf(
-                                if (testDataMap["singleton_or_twins"] == "Singleton") 0.0f else 1.0f,
-                                testDataMap["fetus_1"].toString().toFloat(),
-                                testDataMap["fetus_2"].toString().toFloat(),
-                                testDataMap["height"].toString().toFloat(),
-                                testDataMap["weight"].toString().toFloat(),
-                                if (testDataMap["racial_origin"] == "White") 1.0f else if (testDataMap["racial_origin"] == "Black") 2.0f else if (testDataMap["racial_origin"] == "South Asian") 3.0f else if (testDataMap["racial_origin"] == "South Asian") 4.0f  else 5.0f,
-                                if (testDataMap["smoking"] as Boolean) 1.0f else 2.0f,
-                                if (testDataMap["previous_preeclampsia"] as Boolean) 1.0f else 2.0f,
-                                if (testDataMap["conception_method"] == "Spontenous") 1.0f else if (testDataMap["conceptionTypeChosen"] == "Ovulatio drugs") 2.0f else 3.0f,
-                                if (testDataMap["ch_hipertension"] as Boolean) 1.0f else 2.0f,
-                                if (testDataMap["diabetes_type_1"] as Boolean) 1.0f else 0.0f,
-                                if (testDataMap["diabetes_type_2"] as Boolean) 1.0f else 0.0f,
-                                if (testDataMap["SLE"] as Boolean) 1.0f else 2.0f,
-                                if (testDataMap["APS"] as Boolean) 1.0f else 2.0f,
-                                if (testDataMap["nulliparous"] as Boolean) 1.0f else 0.0f,
-                                testDataMap["MAP"].toString().toFloat(),
-                                testDataMap["MAP"].toString().toFloat(),
-                                if (testDataMap["plgf"] as Boolean) 1.0f else 0.0f,
-                                if (testDataMap["pappa"] as Boolean) 1.0f else 0.0f,
-                            )
-
-                            // Make predictions using the loaded model
-                            val X_test = arrayOf(testData)
-                            val y_pred = model.predict(X_test)
-
-                            // Write the predicted results to a JSON file
-                            val jsonResult = JSONObject()
-                            jsonResult.put("predictions", JSONArray(y_pred.toList()))
-                            val fileWriter = FileWriter("$folder/predictions.json")
-                            fileWriter.write(jsonResult.toString())
-                            fileWriter.close()
-
-                            Toast.makeText(context, "???", Toast.LENGTH_SHORT).show()
-
 
                     })
             }

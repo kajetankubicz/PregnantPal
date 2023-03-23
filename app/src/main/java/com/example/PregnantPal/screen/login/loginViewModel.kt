@@ -11,7 +11,7 @@ import com.example.pregnantpal.repository.AuthRepository
 import kotlinx.coroutines.launch
 
 class loginViewModel(
-    private val repository: AuthRepository = AuthRepository()
+    private val repository: AuthRepository = AuthRepository(),
 ) :ViewModel() {
 
     val currentUser = repository.currentUser
@@ -95,7 +95,7 @@ class loginViewModel(
             loginUiState = loginUiState.copy(loginError = null)
             repository.login(
                 loginUiState.userName,
-                loginUiState.password
+                loginUiState.password,
             ){ isSuccessful ->
                 if(isSuccessful){
                     Toast.makeText(
@@ -122,7 +122,6 @@ class loginViewModel(
     }
 }
 
-
 data class LoginUiState(
     val userName: String = "",
     val password: String = "",
@@ -132,5 +131,6 @@ data class LoginUiState(
     val isLoading: Boolean = false,
     val isSuccessLogin: Boolean = false,
     val signUpError: String? = null,
-    val loginError: String? = null
+    val loginError: String? = null,
+    val isAdmin: Boolean = false
 )

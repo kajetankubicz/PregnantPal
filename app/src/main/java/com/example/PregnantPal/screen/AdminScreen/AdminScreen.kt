@@ -1,13 +1,11 @@
-package com.example.pregnantpal.screen
+package com.example.pregnantpal.screen.AdminScreen
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,27 +13,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
 import com.example.pregnantpal.screen.Navigation.Screens
-import com.example.pregnantpal.ui.theme.iconsWhite
 import com.example.pregnantpal.ui.theme.pregnantPalColor
 import com.google.firebase.auth.FirebaseAuth
 
-
 @Composable
-fun MainScreen(
-    navController: NavController,
-){
+fun AdminScreen(
+    navController: NavController
+) {
     Scaffold(
         topBar = {
 
@@ -79,7 +70,7 @@ fun MainScreen(
                         ) {
                             Icon(
                                 Icons.Filled.Settings, contentDescription = "Menu",
-                                tint = Color.White
+                                tint = MaterialTheme.colors.background
                             )
                         }
                         DropdownMenu(
@@ -111,103 +102,69 @@ fun MainScreen(
             }
         }
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Welcome, Admin!",
+                style = MaterialTheme.typography.h5
+            )
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Tile(
-                    title = "My Account",
-                    icon = Icons.Filled.AccountCircle,
-                    onClick = { /* navigate to account screen */ }
+                ParameterCard(
+                    title = "Blood Pressure",
+                    value = "120/80 mmHg"
                 )
-
-                Tile(
-                    title = "Fill Data",
-                    icon = Icons.Filled.Edit,
-                    onClick = {
-                        navController.navigate(route = Screens.PregnantPalScreen.name+"/pregnantPal_screen")
-                    }
+                ParameterCard(
+                    title = "Weight",
+                    value = "65 kg"
                 )
             }
-
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 32.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Tile(
-                    title = "View Results",
-                    icon = Icons.Filled.AccountBox,
-                    onClick = { /* navigate to results screen */ }
+                ParameterCard(
+                    title = "Blood Sugar",
+                    value = "120 mg/dL"
                 )
-
-                Tile(
-                    title = "Contact Us",
-                    icon = Icons.Filled.Call,
-                    onClick = { /* navigate to contact screen */ }
-                )
-            }
-
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 80.dp, start = 40.dp, end = 20.dp, bottom = 20.dp)
-            ) {
-                Text(
-                    text = "Projekt grupowy 10@KIBI'2023",
-                    fontSize = 25.sp,
-                    style = MaterialTheme.typography.caption
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(
-                    text = "Kajetan Kubicz, Renata Bańka, Agnieszka Blok, Antoni Górecki",
-                    fontSize = 25.sp,
-                    style = MaterialTheme.typography.caption
+                ParameterCard(
+                    title = "Hemoglobin",
+                    value = "12 g/dL"
                 )
             }
         }
     }
-
-
 }
 
-
 @Composable
-fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
+fun ParameterCard(title: String, value: String) {
     Card(
         modifier = Modifier
-            .padding(16.dp)
-            .clickable(onClick = onClick)
-            .size(150.dp),
-        elevation = 4.dp,
-        backgroundColor = (pregnantPalColor),
-        shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.5.dp, color = Color.LightGray)
+            .padding(8.dp)
+            .width(150.dp)
+            .height(150.dp),
+        elevation = 4.dp
     ) {
         Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .wrapContentSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.padding(16.dp)
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = iconsWhite,
-                modifier = Modifier.size(48.dp)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = title,
-                color = Color.White,
-                style = MaterialTheme.typography.subtitle1
+                text = value,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.pregnantpal.screen.Login
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -14,12 +15,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun loginScreen(
     loginViewModel: loginViewModel? = null,
     onNavToHomePage:() -> Unit,
     onNavToSignUpPage:() -> Unit,
+    onNavToAdminPage:() -> Unit
+
 ) {
     val loginUiState = loginViewModel?.loginUiState
     val isError = loginUiState?.loginError != null
@@ -87,6 +93,7 @@ fun loginScreen(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Don't have an Account?")
             Spacer(modifier = Modifier.size(8.dp))
@@ -101,11 +108,32 @@ fun loginScreen(
             CircularProgressIndicator()
         }
 
-        LaunchedEffect(key1 = loginViewModel?.hasUser){
+        /*LaunchedEffect(key1 = loginViewModel?.hasUser){
             if (loginViewModel?.hasUser == true){
                 onNavToHomePage.invoke()
             }
+        }*/
+
+        LaunchedEffect(key1 = loginViewModel?.hasUser){
+            val userId = Firebase.auth.currentUser?.uid
+            if(loginViewModel?.hasUser == true) {
+                if (userId != null) {
+                    val usersCollection = Firebase.firestore.collection("users")
+                    usersCollection.document(userId).get()
+                        .addOnSuccessListener { userDoc ->
+                            val isAdmin = userDoc.getBoolean("isAdmin") ?: false
+                            if (isAdmin) {
+                                Log.d("MyApp", "Admin")
+                                onNavToAdminPage.invoke()
+                            } else {
+                                Log.d("MyApp", "User!")
+                                onNavToHomePage.invoke()
+                            }
+                        }
+                }
+            }
         }
+
     }
 }
 
@@ -113,7 +141,7 @@ fun loginScreen(
 fun SignUpScreen(
     loginViewModel: loginViewModel? = null,
     onNavToHomePage:() -> Unit,
-    onNavToLoginPage:() -> Unit,
+    onNavToLoginPage:() -> Unit
 ) {
     val loginUiState = loginViewModel?.loginUiState
     val isError = loginUiState?.signUpError != null
@@ -198,6 +226,7 @@ fun SignUpScreen(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Already have an Account?")
             Spacer(modifier = Modifier.size(8.dp))
@@ -217,3 +246,5 @@ fun SignUpScreen(
         }
     }
 }
+
+
