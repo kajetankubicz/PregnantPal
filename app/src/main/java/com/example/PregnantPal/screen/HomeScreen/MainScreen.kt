@@ -1,6 +1,7 @@
 package com.example.pregnantpal.screen
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,11 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
 import com.example.pregnantpal.screen.Navigation.Screens
@@ -30,7 +34,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun MainScreen(
-    navController: NavController
+    navController: NavController,
 ){
     Scaffold(
         topBar = {
@@ -68,28 +72,40 @@ fun MainScreen(
                         fontWeight = FontWeight.Bold
                     )
 
-                    IconButton(
-                        onClick = { expanded.value = true },
-                        modifier = Modifier.padding(end = 8.dp)
-                    ) {
-                        Icon(Icons.Filled.MoreVert, contentDescription = "Menu")
-                    }
-
-
-                    DropdownMenu(
-                        expanded = expanded.value,
-                        onDismissRequest = { expanded.value = false },
-                        modifier = Modifier.width(200.dp)
-                    ) {
-                        DropdownMenuItem(onClick = {
-                            FirebaseAuth.getInstance().currentUser?.let {
-                                FirebaseAuth.getInstance().signOut()
-                                navController.navigate(route = Screens.SignInScreen.name)
+                    Box {
+                        IconButton(
+                            onClick = { expanded.value = true },
+                            modifier = Modifier.padding(end = 8.dp)
+                        ) {
+                            Icon(
+                                Icons.Filled.Settings, contentDescription = "Menu",
+                                tint = Color.White
+                            )
+                        }
+                        DropdownMenu(
+                            expanded = expanded.value,
+                            onDismissRequest = { expanded.value = false },
+                            modifier = Modifier
+                                .background(MaterialTheme.colors.onBackground, RoundedCornerShape(0.dp))
+                                .width(100.dp)
+                        ) {
+                            DropdownMenuItem(
+                                onClick = {
+                                    FirebaseAuth.getInstance().currentUser?.let {
+                                        FirebaseAuth.getInstance().signOut()
+                                        navController.navigate(route = Screens.SignInScreen.name)
+                                    }
+                                }
+                            ) {
+                                Text(
+                                    text = "Sign out",
+                                    color = MaterialTheme.colors.background,
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
-                        }) {
-                            Text(text = "Sign out")
                         }
                     }
+
 
                 }
             }
@@ -112,7 +128,8 @@ fun MainScreen(
                     title = "Fill Data",
                     icon = Icons.Filled.Edit,
                     onClick = {
-                        navController.navigate(route = Screens.PregnantPalScreen.name+"/pregnantPal_screen") }
+                        navController.navigate(route = Screens.PregnantPalScreen.name+"/pregnantPal_screen")
+                    }
                 )
             }
 
@@ -139,7 +156,7 @@ fun MainScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top=80.dp, start = 40.dp, end = 20.dp, bottom = 20.dp)
+                    .padding(top = 80.dp, start = 40.dp, end = 20.dp, bottom = 20.dp)
             ) {
                 Text(
                     text = "Projekt grupowy 10@KIBI'2023",

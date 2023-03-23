@@ -39,7 +39,6 @@ import com.example.pregnantpal.components.addButton
 import com.example.pregnantpal.components.textInput
 import com.google.gson.Gson
 import java.io.File
-import java.time.LocalDateTime
 
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -56,18 +55,24 @@ fun PregnantPalScreen(
         mutableStateOf(false)
     }
 
-    var pregnancyTypeChosen = remember {
+    var singleton_or_twins = remember {
         mutableStateOf(pregnancyTypes[0])
     }
 
-    var fetalCrownRumpLength = remember{
+    var fetus_1 = remember{
         mutableStateOf("")
     }
 
+    var fetus_2 = remember{
+        mutableStateOf("")
+    }
+
+    //??
     var examinationDate = remember {
         mutableStateOf(value = "")
     }
 
+    //??
     var dayOfBirth = remember {
         mutableStateOf(value = "")
     }
@@ -85,15 +90,15 @@ fun PregnantPalScreen(
         mutableStateOf(false)
     }
 
-    var racialOriginChosen = remember {
+    var racial_origin = remember {
         mutableStateOf(racialOrigin[0])
     }
 
-    var smokeState = remember {
+    var smoking = remember {
         mutableStateOf(false)
     }
 
-    val motherPEState = remember {
+    val previous_preeclampsia = remember {
         mutableStateOf(false)
     }
 
@@ -102,53 +107,63 @@ fun PregnantPalScreen(
         mutableStateOf(false)
     }
 
-    var conceptionTypeChosen = remember {
+    var conception_method = remember {
         mutableStateOf(conceptionList[0])
     }
 
-    var hypertensionState = remember {
+    var ch_hipertension = remember {
         mutableStateOf(false)
     }
 
-    var diabetesFirstState = remember {
+    var diabetes_type_1 = remember {
         mutableStateOf(false)
     }
 
-    var diabetesSecondState = remember {
+    var diabetes_type_2 = remember {
         mutableStateOf(false)
     }
 
-    var lupusState = remember {
+    var SLE = remember {
         mutableStateOf(false)
     }
 
-    var phospholipidState = remember {
+    var APS = remember {
         mutableStateOf(false)
     }
 
-    var whenLastPregnancyState = remember {
+    var nulliparous = remember {
         mutableStateOf(false)
     }
 
-    var meanArterialPressure = remember {
+    var MAP = remember {
         mutableStateOf("")
     }
 
-    var meanUterineArtery = remember {
+    var UTAPI = remember {
         mutableStateOf("")
     }
 
+    //??
     var dateOfBiophysicalMeasurements = remember {
         mutableStateOf("")
     }
 
-    var serumPLGFState = remember {
+    var plgf = remember {
         mutableStateOf(false)
     }
 
-    var serumPAPPAState = remember {
+    var pappa = remember {
         mutableStateOf(false)
     }
+
+    val ga_age = 0
+    val inter_pregancy_interval = 0
+
+    val last_pregnancy_pe = 0
+    val last_pregnancy_delivery_weeks = 0
+    val last_pregnancy_delivery_days =  0
+
+
 
     Column(modifier = Modifier.padding(6.dp)) {
 
@@ -209,9 +224,9 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             TextField(
-                                value = pregnancyTypeChosen.value,
+                                value = singleton_or_twins.value,
                                 onValueChange = {
-                                    pregnancyTypeChosen.value = it
+                                    singleton_or_twins.value = it
                                 },
                                 label = { Text(text = "Pregnancy Type") },
                                 trailingIcon = {
@@ -232,7 +247,7 @@ fun PregnantPalScreen(
                                 pregnancyTypes.forEach { selectionOption ->
                                     DropdownMenuItem(
                                         onClick = {
-                                            pregnancyTypeChosen.value = selectionOption
+                                            singleton_or_twins.value = selectionOption
                                             expanded.value = false
                                         }) {
                                         Text(text = selectionOption)
@@ -243,14 +258,15 @@ fun PregnantPalScreen(
 
                         //Fetal crown-rump length
                         textInput(
-                            text = "${fetalCrownRumpLength.value}",
+                            text = "${fetus_1.value}",
                             modifier = Modifier
                                 .padding(top = 10.dp, bottom = 10.dp),
                             onTextChange = {
                                 if (it.all { char ->
                                         char.isDigit() || char == '-'
                                     })
-                                    fetalCrownRumpLength.value = it.take(5)
+                                    fetus_1.value = it.take(5)
+                                    fetus_2.value = it.take(5)
                             },
                             keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                             label = "Fetal crown-rump length [mm] (eg. 45-84)"
@@ -360,9 +376,9 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             TextField(
-                                value = racialOriginChosen.value,
+                                value = racial_origin.value,
                                 onValueChange = {
-                                    racialOriginChosen.value = it
+                                    racial_origin.value = it
                                 },
                                 label = { Text(text = "Racial origin") },
                                 trailingIcon = {
@@ -383,7 +399,7 @@ fun PregnantPalScreen(
                                 racialOrigin.forEach { selectionOption ->
                                     DropdownMenuItem(
                                         onClick = {
-                                            racialOriginChosen.value = selectionOption
+                                            racial_origin.value = selectionOption
                                             expandedRacial.value = false
                                         }) {
                                         Text(text = selectionOption)
@@ -397,18 +413,18 @@ fun PregnantPalScreen(
                         Text(text = "Have you smoked during pregnancy?")
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Checkbox(
-                                checked = smokeState.value,
+                                checked = smoking.value,
                                 onCheckedChange = {
-                                    smokeState.value = it
+                                    smoking.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !smokeState.value,
+                                checked = !smoking.value,
                                 onCheckedChange = {
-                                    smokeState.value = !it
+                                    smoking.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -420,18 +436,18 @@ fun PregnantPalScreen(
                         Text(text = "Have your mather had PE?")
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Checkbox(
-                                checked = motherPEState.value,
+                                checked = previous_preeclampsia.value,
                                 onCheckedChange = {
-                                    motherPEState.value = it
+                                    previous_preeclampsia.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !motherPEState.value,
+                                checked = !previous_preeclampsia.value,
                                 onCheckedChange = {
-                                    motherPEState.value = !it
+                                    previous_preeclampsia.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -449,9 +465,9 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             TextField(
-                                value = conceptionTypeChosen.value,
+                                value = conception_method.value,
                                 onValueChange = {
-                                    conceptionTypeChosen.value = it
+                                    conception_method.value = it
                                 },
                                 label = { Text(text = "Conception method") },
                                 trailingIcon = {
@@ -472,7 +488,7 @@ fun PregnantPalScreen(
                                 conceptionList.forEach { selectionOption ->
                                     DropdownMenuItem(
                                         onClick = {
-                                            conceptionTypeChosen.value = selectionOption
+                                            conception_method.value = selectionOption
                                             expandedConception.value = false
                                         }) {
                                         Text(text = selectionOption)
@@ -525,18 +541,18 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             Checkbox(
-                                checked = hypertensionState.value,
+                                checked = ch_hipertension.value,
                                 onCheckedChange = {
-                                    hypertensionState.value = it
+                                    ch_hipertension.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !hypertensionState.value,
+                                checked = !ch_hipertension.value,
                                 onCheckedChange = {
-                                    hypertensionState.value = !it
+                                    ch_hipertension.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -551,18 +567,18 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             Checkbox(
-                                checked = diabetesFirstState.value,
+                                checked = diabetes_type_1.value,
                                 onCheckedChange = {
-                                    diabetesFirstState.value = it
+                                    diabetes_type_1.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !diabetesFirstState.value,
+                                checked = !diabetes_type_1.value,
                                 onCheckedChange = {
-                                    diabetesFirstState.value = !it
+                                    diabetes_type_1.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -577,18 +593,18 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             Checkbox(
-                                checked = diabetesSecondState.value,
+                                checked = diabetes_type_2.value,
                                 onCheckedChange = {
-                                    diabetesSecondState.value = it
+                                    diabetes_type_2.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !diabetesSecondState.value,
+                                checked = !diabetes_type_2.value,
                                 onCheckedChange = {
-                                    diabetesSecondState.value = !it
+                                    diabetes_type_2.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -603,18 +619,18 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             Checkbox(
-                                checked = lupusState.value,
+                                checked = SLE.value,
                                 onCheckedChange = {
-                                    lupusState.value = it
+                                    SLE.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !lupusState.value,
+                                checked = !SLE.value,
                                 onCheckedChange = {
-                                    lupusState.value = !it
+                                    SLE.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -629,18 +645,18 @@ fun PregnantPalScreen(
                                 .padding(top = 10.dp, bottom = 10.dp)
                         ) {
                             Checkbox(
-                                checked = phospholipidState.value,
+                                checked = APS.value,
                                 onCheckedChange = {
-                                    phospholipidState.value = it
+                                    APS.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !phospholipidState.value,
+                                checked = !APS.value,
                                 onCheckedChange = {
-                                    phospholipidState.value = !it
+                                    APS.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -690,18 +706,18 @@ fun PregnantPalScreen(
                                 .padding(all = 20.dp)
                         ) {
                             Checkbox(
-                                checked = whenLastPregnancyState.value,
+                                checked = nulliparous.value,
                                 onCheckedChange = {
-                                    whenLastPregnancyState.value = it
+                                    nulliparous.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !whenLastPregnancyState.value,
+                                checked = !nulliparous.value,
                                 onCheckedChange = {
-                                    whenLastPregnancyState.value = !it
+                                    nulliparous.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -745,14 +761,14 @@ fun PregnantPalScreen(
 
                         //Mean arterial pressure
                         textInput(
-                            text = "${meanArterialPressure.value}",
+                            text = "${MAP.value}",
                             modifier = Modifier
                                 .padding(top = 10.dp, bottom = 10.dp),
                             onTextChange = {
                                 if (it.all { char ->
                                         char.isDigit() || char == '.'
                                     })
-                                    meanArterialPressure.value = it.take(5)
+                                    MAP.value = it.take(5)
                             },
                             keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                             label = "Mean arterial pressure [mm]"
@@ -760,14 +776,14 @@ fun PregnantPalScreen(
 
                         //Mean uterine artery
                         textInput(
-                            text = "${meanUterineArtery.value}",
+                            text = "${UTAPI.value}",
                             modifier = Modifier
                                 .padding(top = 10.dp, bottom = 10.dp),
                             onTextChange = {
                                 if (it.all { char ->
                                         char.isDigit() || char == '.'
                                     })
-                                    meanUterineArtery.value = it.take(5)
+                                    UTAPI.value = it.take(5)
                             },
                             keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                             label = "Mean uterine artery PI"
@@ -830,18 +846,18 @@ fun PregnantPalScreen(
                                 .padding(all = 20.dp)
                         ) {
                             Checkbox(
-                                checked = serumPLGFState.value,
+                                checked = plgf.value,
                                 onCheckedChange = {
-                                    serumPLGFState.value = it
+                                    plgf.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !serumPLGFState.value,
+                                checked = !plgf.value,
                                 onCheckedChange = {
-                                    serumPLGFState.value = !it
+                                    plgf.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -856,18 +872,18 @@ fun PregnantPalScreen(
                                 .padding(all = 20.dp)
                         ) {
                             Checkbox(
-                                checked = serumPAPPAState.value,
+                                checked = pappa.value,
                                 onCheckedChange = {
-                                    serumPAPPAState.value = it
+                                    pappa.value = it
                                 },
                                 modifier = Modifier.padding(end = 8.dp)
                             )
                             Text(text = "Yes")
 
                             Checkbox(
-                                checked = !serumPAPPAState.value,
+                                checked = !pappa.value,
                                 onCheckedChange = {
-                                    serumPAPPAState.value = !it
+                                    pappa.value = !it
                                 },
                                 modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                             )
@@ -884,47 +900,56 @@ fun PregnantPalScreen(
                     text = "Save data",
                     onClick = {
                         if(
-                            pregnancyTypeChosen.value.isNotEmpty() &&
-                            fetalCrownRumpLength.value.isNotEmpty() &&
+                            singleton_or_twins.value.isNotEmpty() &&
+                            fetus_1.value.isNotEmpty() &&
                             examinationDate.value.isNotEmpty() &&
                             dayOfBirth.value.isNotEmpty() &&
                             height.value.isNotEmpty() &&
                             weight.value.isNotEmpty() &&
-                            racialOriginChosen.value.isNotEmpty() &&
-                            conceptionTypeChosen.value.isNotEmpty() &&
-                            meanArterialPressure.value.isNotEmpty() &&
+                            racial_origin.value.isNotEmpty() &&
+                            conception_method.value.isNotEmpty() &&
+                            MAP.value.isNotEmpty() &&
                             dateOfBiophysicalMeasurements.value.isNotEmpty()
                         ){
-                            saveDataToJson(context, data =
-                            MaternalData(
-                                pregnancyTypeChosen = pregnancyTypeChosen.value,
-                                fetalCrownRumpLength = fetalCrownRumpLength.value,
-                                examinationDate = examinationDate.value,
-                                dayOfBirth = dayOfBirth.value,
-                                height = height.value,
-                                weight = weight.value,
-                                racialOriginChosen = racialOriginChosen.value,
-                                smokeState = smokeState.value,
-                                motherPEState = motherPEState.value,
-                                conceptionTypeChosen = conceptionTypeChosen.value,
-                                hypertensionState = hypertensionState.value,
-                                diabetesFirstState = diabetesFirstState.value,
-                                lupusState = lupusState .value,
-                                phospholipidState = phospholipidState.value,
-                                whenLastPregnancyState = whenLastPregnancyState.value,
-                                meanArterialPressure =  meanArterialPressure.value,
-                                dateOfBiophysicalMeasurements =  dateOfBiophysicalMeasurements.value,
-                                serumPLGFState =  serumPLGFState.value,
-                                serumPAPPAState = serumPAPPAState.value,
-                                entryDate = LocalDateTime.now()
+                            saveDataToJson(
+                                context, data = MaternalData(
+                                    singleton_or_twins = singleton_or_twins.value,
+                                    fetus_1 = fetus_1.value,
+                                    fetus_2 = fetus_1.value,
+                                    examinationDate = examinationDate.value,
+                                    dayOfBirth = dayOfBirth.value,
+                                    height = height.value,
+                                    weight = weight.value,
+                                    racial_origin = racial_origin.value,
+                                    smoking = smoking.value,
+                                    previous_preeclampsia = previous_preeclampsia.value,
+                                    conception_method = conception_method.value,
+                                    ch_hipertension = ch_hipertension.value,
+                                    diabetes_type_1 = diabetes_type_1.value,
+                                    diabetes_type_2 = diabetes_type_2.value,
+                                    SLE = SLE .value,
+                                    APS = APS.value,
+                                    nulliparous = nulliparous.value,
+                                    last_pregnancy_pe = last_pregnancy_pe,
+                                    last_pregnancy_delivery_weeks = last_pregnancy_delivery_weeks,
+                                    last_pregnancy_delivery_days =  last_pregnancy_delivery_days,
+                                    MAP =  MAP.value,
+                                    dateOfBiophysicalMeasurements =  dateOfBiophysicalMeasurements.value,
+                                    plgf =  plgf.value,
+                                    pappa = pappa.value,
+                                    ga_age = ga_age,
+                                    inter_pregancy_interval = inter_pregancy_interval
                             ))
+
 
                             Toast.makeText(context, "Data saved", Toast.LENGTH_SHORT).show()
                         }else{
                             Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
                         }
+
                     })
             }
+
         }
 
     }
@@ -962,3 +987,4 @@ private fun saveDataToJson(context: Context, data: MaternalData) {
         e.printStackTrace()
     }
 }
+

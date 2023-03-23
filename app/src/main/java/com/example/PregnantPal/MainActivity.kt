@@ -23,12 +23,10 @@ class MainActivity : ComponentActivity() {
             val loginViewModel = viewModel(modelClass = loginViewModel::class.java)
 
             PregnantPalTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-
                     Navigation(loginViewModel = loginViewModel)
 
                 }
@@ -42,6 +40,5 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     PregnantPalTheme {
-
     }
 }
