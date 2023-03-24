@@ -4,6 +4,7 @@ enum class Screens {
     SignUpScreen,
     SignInScreen,
     MainScreen,
+    SettingsScreen,
     PregnantPalScreen,
     AdminScreen;
     companion object{
@@ -11,6 +12,7 @@ enum class Screens {
             SignUpScreen.name -> SignUpScreen
             SignInScreen.name -> SignInScreen
             MainScreen.name -> MainScreen
+            SettingsScreen.name -> SettingsScreen
             PregnantPalScreen.name -> PregnantPalScreen
             AdminScreen.name -> AdminScreen
             null -> MainScreen

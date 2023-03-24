@@ -32,7 +32,6 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -78,7 +77,8 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
     //coil
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation "io.coil-kt:coil:2.2.2"
+    implementation "io.coil-kt:coil-compose:2.2.2"
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
@@ -99,4 +99,8 @@ dependencies {
     //Tensorflow Lite
     implementation 'org.tensorflow:tensorflow-lite:2.6.0'
     implementation 'org.tensorflow:tensorflow-lite-support:0.2.0'
+
+    implementation "androidx.compose.material3:material3:1.0.1"
+    implementation "androidx.compose.material3:material3-window-size-class:1.0.1"
+    implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
 }

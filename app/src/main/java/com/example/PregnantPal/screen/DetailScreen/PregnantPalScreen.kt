@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Environment
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CornerSize
@@ -21,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -164,795 +164,860 @@ fun PregnantPalScreen(
     val last_pregnancy_delivery_days =  0
 
 
-
-    Column(modifier = Modifier.padding(6.dp)) {
-
-        TopAppBar(
-            title = {
-                Text(text = stringResource(id = R.string.app_name))
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Arrow Back",
-                    )
-                }
-            },
-            elevation = 5.dp,
-            backgroundColor = MaterialTheme.colors.background,
-            modifier = Modifier.clip(shape = RoundedCornerShape(15.dp))
-        )
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(androidx.compose.material3.MaterialTheme.colorScheme.tertiary)) {
+        Column(
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxSize()
         ) {
-            // #1 row of data - Pregnancy type and dating
-            item {
-                Card(
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier.padding(10.dp),
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                    border = BorderStroke(width = 2.dp, color = Color.LightGray)
-                ) {
+            TopAppBar(
+                title = {
                     Text(
-                        text = "Basic Information",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 18.sp
+                        text = stringResource(id = R.string.app_name),
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 20.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
+                },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Arrow Back",
+                            tint = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                    }
+                },
+                elevation = 5.dp,
+                backgroundColor = (androidx.compose.material3.MaterialTheme.colorScheme.onTertiary),
+                modifier = Modifier.clip(shape = RoundedCornerShape(15.dp))
+            )
 
-                        //Pregnancy Type
-                        ExposedDropdownMenuBox(
-                            expanded = expanded.value,
-                            onExpandedChange = {
-                                expanded.value = !expanded.value
-                            },
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                // #1 row of data - Pregnancy type and dating
+                item {
+                    Card(
+                        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier.padding(10.dp),
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                    ) {
+                        Text(
+                            text = "Basic Information",
                             modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
+                                .padding(10.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 18.sp,
+                            color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, top = 20.dp),
+                            horizontalAlignment = Alignment.Start
                         ) {
-                            TextField(
-                                value = singleton_or_twins.value,
-                                onValueChange = {
-                                    singleton_or_twins.value = it
-                                },
-                                label = { Text(text = "Pregnancy Type") },
-                                trailingIcon = {
-                                    ExposedDropdownMenuDefaults.TrailingIcon(
-                                        expanded = expanded.value
-                                    )
-                                },
-                                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                                readOnly = true,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    imeAction = ImeAction.Done,
-                                    keyboardType = KeyboardType.Text
-                                )
-                            )
-                            ExposedDropdownMenu(
+
+                            //Pregnancy Type
+                            ExposedDropdownMenuBox(
                                 expanded = expanded.value,
-                                onDismissRequest = { expanded.value = false }) {
-                                pregnancyTypes.forEach { selectionOption ->
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            singleton_or_twins.value = selectionOption
-                                            expanded.value = false
-                                        }) {
-                                        Text(text = selectionOption)
+                                onExpandedChange = {
+                                    expanded.value = !expanded.value
+                                },
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                TextField(
+                                    value = singleton_or_twins.value,
+                                    onValueChange = {
+                                        singleton_or_twins.value = it
+                                    },
+                                    label = { Text(text = "Pregnancy Type", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)},
+                                    trailingIcon = {
+                                        ExposedDropdownMenuDefaults.TrailingIcon(
+                                            expanded = expanded.value
+                                        )
+                                    },
+                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer),
+                                    readOnly = true,
+                                    keyboardOptions = KeyboardOptions.Default.copy(
+                                        imeAction = ImeAction.Done,
+                                        keyboardType = KeyboardType.Text
+                                    )
+                                )
+                                ExposedDropdownMenu(
+                                    expanded = expanded.value,
+                                    onDismissRequest = { expanded.value = false }) {
+                                    pregnancyTypes.forEach { selectionOption ->
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                singleton_or_twins.value = selectionOption
+                                                expanded.value = false
+                                            }) {
+                                            Text(text = selectionOption)
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        //Fetal crown-rump length
-                        textInput(
-                            text = "${fetus_1.value}",
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit() || char == '-'
-                                    })
-                                    fetus_1.value = it.take(5)
+                            //Fetal crown-rump length
+                            textInput(
+                                text = "${fetus_1.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit() || char == '-'
+                                        })
+                                        fetus_1.value = it.take(5)
                                     fetus_2.value = it.take(5)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Fetal crown-rump length [mm] (eg. 45-84)"
-                        )
+                                },
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Fetal crown-rump length [mm] (eg. 45-84)",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            )
 
-                        //Examination Date
-                        textInput(
-                            text = "${examinationDate.value}",
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit() || char == '-'
-                                    })
-                                    examinationDate.value = it.take(10)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Examination date [dd-mm-yyyy]"
-                        )
+                            //Examination Date
+                            textInput(
+                                text = "${examinationDate.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit() || char == '-'
+                                        })
+                                        examinationDate.value = it.take(10)
+                                },
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Examination date [dd-mm-yyyy]",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
                     }
                 }
-            }
-            //Divider
-            item {
-                Divider(
-                    modifier = Modifier.padding(10.dp),
-                    color = MaterialTheme.colors.background
-                )
-            }
-            // #2 row of data - Maternal characteristics
-            item {
-                Card(
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier.padding(10.dp),
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                    border = BorderStroke(width = 2.dp, color = Color.LightGray)
-                ) {
-                    Text(
-                        text = "Maternal characteristics",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 18.sp
+                //Divider
+                item {
+                    Divider(
+                        modifier = Modifier.padding(10.dp),
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 20.dp),
-                        horizontalAlignment = Alignment.Start
+                }
+                // #2 row of data - Maternal characteristics
+                item {
+                    Card(
+                        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier.padding(10.dp),
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
                     ) {
-
-                        //Date of birth
-                        textInput(
-                            text = "${dayOfBirth.value}",
+                        Text(
+                            text = "Maternal characteristics",
                             modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit() || char == '-'
-                                    })
-                                    dayOfBirth.value = it.take(10)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Expected date of birth [dd-mm-yyyy]"
+                                .padding(10.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 18.sp,
+                            color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                         )
-
-                        //Height
-                        textInput(
-                            text = "${height.value}",
+                        Column(
                             modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit()
-                                    })
-                                    height.value = it.take(3)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Height [cm]"
-                        )
-
-                        //Weight
-                        textInput(
-                            text = "${weight.value}",
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit()
-                                    })
-                                    weight.value = it.take(3)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Weight [kg]"
-                        )
-
-                        //Racial origin
-                        ExposedDropdownMenuBox(
-                            expanded = expandedRacial.value,
-                            onExpandedChange = {
-                                expandedRacial.value = !expandedRacial.value
-                            },
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, top = 20.dp),
+                            horizontalAlignment = Alignment.Start
                         ) {
-                            TextField(
-                                value = racial_origin.value,
-                                onValueChange = {
-                                    racial_origin.value = it
+
+                            //Date of birth
+                            textInput(
+                                text = "${dayOfBirth.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit() || char == '-'
+                                        })
+                                        dayOfBirth.value = it.take(10)
                                 },
-                                label = { Text(text = "Racial origin") },
-                                trailingIcon = {
-                                    ExposedDropdownMenuDefaults.TrailingIcon(
-                                        expanded = expandedRacial.value
-                                    )
-                                },
-                                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                                readOnly = true,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    imeAction = ImeAction.Done,
-                                    keyboardType = KeyboardType.Text
-                                )
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Expected date of birth [dd-mm-yyyy]",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                             )
-                            ExposedDropdownMenu(
+
+                            //Height
+                            textInput(
+                                text = "${height.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit()
+                                        })
+                                        height.value = it.take(3)
+                                },
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Height [cm]",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+
+                            //Weight
+                            textInput(
+                                text = "${weight.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit()
+                                        })
+                                        weight.value = it.take(3)
+                                },
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Weight [kg]",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+
+                            //Racial origin
+                            ExposedDropdownMenuBox(
                                 expanded = expandedRacial.value,
-                                onDismissRequest = { expandedRacial.value = false }) {
-                                racialOrigin.forEach { selectionOption ->
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            racial_origin.value = selectionOption
-                                            expandedRacial.value = false
-                                        }) {
-                                        Text(text = selectionOption)
-                                    }
-                                }
-                            }
-                        }
-
-                        //Smoking during pregnancy
-
-                        Text(text = "Have you smoked during pregnancy?")
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(
-                                checked = smoking.value,
-                                onCheckedChange = {
-                                    smoking.value = it
+                                onExpandedChange = {
+                                    expandedRacial.value = !expandedRacial.value
                                 },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !smoking.value,
-                                onCheckedChange = {
-                                    smoking.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                        //Mother of the patient had PE
-
-                        Text(text = "Have your mather had PE?")
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Checkbox(
-                                checked = previous_preeclampsia.value,
-                                onCheckedChange = {
-                                    previous_preeclampsia.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !previous_preeclampsia.value,
-                                onCheckedChange = {
-                                    previous_preeclampsia.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-
-                        //Conception method
-                        ExposedDropdownMenuBox(
-                            expanded = expandedConception.value,
-                            onExpandedChange = {
-                                expandedConception.value = !expandedConception.value
-                            },
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
-                        ) {
-                            TextField(
-                                value = conception_method.value,
-                                onValueChange = {
-                                    conception_method.value = it
-                                },
-                                label = { Text(text = "Conception method") },
-                                trailingIcon = {
-                                    ExposedDropdownMenuDefaults.TrailingIcon(
-                                        expanded = expandedConception.value
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                TextField(
+                                    value = racial_origin.value,
+                                    onValueChange = {
+                                        racial_origin.value = it
+                                    },
+                                    label = { Text(text = "Racial origin", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer) },
+                                    trailingIcon = {
+                                        ExposedDropdownMenuDefaults.TrailingIcon(
+                                            expanded = expandedRacial.value
+                                        )
+                                    },
+                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer),
+                                    readOnly = true,
+                                    keyboardOptions = KeyboardOptions.Default.copy(
+                                        imeAction = ImeAction.Done,
+                                        keyboardType = KeyboardType.Text
                                     )
-                                },
-                                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                                readOnly = true,
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    imeAction = ImeAction.Done,
-                                    keyboardType = KeyboardType.Text
                                 )
-                            )
-                            ExposedDropdownMenu(
-                                expanded = expandedConception.value,
-                                onDismissRequest = { expandedConception.value = false }) {
-                                conceptionList.forEach { selectionOption ->
-                                    DropdownMenuItem(
-                                        onClick = {
-                                            conception_method.value = selectionOption
-                                            expandedConception.value = false
-                                        }) {
-                                        Text(text = selectionOption)
+                                ExposedDropdownMenu(
+                                    expanded = expandedRacial.value,
+                                    onDismissRequest = { expandedRacial.value = false }) {
+                                    racialOrigin.forEach { selectionOption ->
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                racial_origin.value = selectionOption
+                                                expandedRacial.value = false
+                                            }) {
+                                            Text(text = selectionOption)
+                                        }
                                     }
                                 }
                             }
+
+                            //Smoking during pregnancy
+
+                            Text(text = "Have you smoked during pregnancy?", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = smoking.value,
+                                    onCheckedChange = {
+                                        smoking.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !smoking.value,
+                                    onCheckedChange = {
+                                        smoking.value = !it
+                                    },
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp)
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                            //Mother of the patient had PE
+
+                            Text(text = "Have your mather had PE?", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Checkbox(
+                                    checked = previous_preeclampsia.value,
+                                    onCheckedChange = {
+                                        previous_preeclampsia.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !previous_preeclampsia.value,
+                                    onCheckedChange = {
+                                        previous_preeclampsia.value = !it
+                                    },
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp)
+                                )
+                                Text(text = "No", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+
+                            //Conception method
+                            ExposedDropdownMenuBox(
+                                expanded = expandedConception.value,
+                                onExpandedChange = {
+                                    expandedConception.value = !expandedConception.value
+                                },
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                TextField(
+                                    value = conception_method.value,
+                                    onValueChange = {
+                                        conception_method.value = it
+                                    },
+                                    label = { Text(text = "Conception method", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer) },
+                                    trailingIcon = {
+                                        ExposedDropdownMenuDefaults.TrailingIcon(
+                                            expanded = expandedConception.value
+                                        )
+                                    },
+                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(textColor =  androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer),
+                                    readOnly = true,
+                                    keyboardOptions = KeyboardOptions.Default.copy(
+                                        imeAction = ImeAction.Done,
+                                        keyboardType = KeyboardType.Text
+                                    )
+                                )
+                                ExposedDropdownMenu(
+                                    expanded = expandedConception.value,
+                                    onDismissRequest = { expandedConception.value = false }) {
+                                    conceptionList.forEach { selectionOption ->
+                                        DropdownMenuItem(
+                                            onClick = {
+                                                conception_method.value = selectionOption
+                                                expandedConception.value = false
+                                            }) {
+                                            Text(text = selectionOption)
+                                        }
+                                    }
+                                }
+                            }
+
+
                         }
-
-
                     }
                 }
-            }
-            //Divider
-            item {
-                Divider(
-                    modifier = Modifier.padding(10.dp),
-                    color = MaterialTheme.colors.background
-                )
-            }
-            // #3 row of data - Medical history
-            item {
-                Card(
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier.padding(10.dp),
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                    border = BorderStroke(width = 2.dp, color = Color.LightGray)
-                ) {
-                    Text(
-                        text = "Medical history",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 18.sp
+                //Divider
+                item {
+                    Divider(
+                        modifier = Modifier.padding(10.dp),
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 40.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-
-                        //Chronic hypertension
-                        Text(text = "Do you have chronic hypertension?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
-                        ) {
-                            Checkbox(
-                                checked = ch_hipertension.value,
-                                onCheckedChange = {
-                                    ch_hipertension.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !ch_hipertension.value,
-                                onCheckedChange = {
-                                    ch_hipertension.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                        //Diabetes type I
-                        Text(text = "Do you have diabetes type I?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
-                        ) {
-                            Checkbox(
-                                checked = diabetes_type_1.value,
-                                onCheckedChange = {
-                                    diabetes_type_1.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !diabetes_type_1.value,
-                                onCheckedChange = {
-                                    diabetes_type_1.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                        //Diabetes type II
-                        Text(text = "Do you have diabetes type II?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
-                        ) {
-                            Checkbox(
-                                checked = diabetes_type_2.value,
-                                onCheckedChange = {
-                                    diabetes_type_2.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !diabetes_type_2.value,
-                                onCheckedChange = {
-                                    diabetes_type_2.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                        //Systemic lupus erythematosus
-                        Text(text = "Do you have lupus erythematosus?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
-                        ) {
-                            Checkbox(
-                                checked = SLE.value,
-                                onCheckedChange = {
-                                    SLE.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !SLE.value,
-                                onCheckedChange = {
-                                    SLE.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                        //Anti-phospholipid syndrome
-                        Text(text = "Do you have anti-phospholipid syndrome?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp)
-                        ) {
-                            Checkbox(
-                                checked = APS.value,
-                                onCheckedChange = {
-                                    APS.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !APS.value,
-                                onCheckedChange = {
-                                    APS.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                    }
                 }
-            }
-            //Divider
-            item {
-                Divider(
-                    modifier = Modifier.padding(10.dp),
-                    color = MaterialTheme.colors.background
-                )
-            }
-            // #4 row of data - Obstetric history
-            item {
-                Card(
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier.padding(10.dp),
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                    border = BorderStroke(width = 2.dp, color = Color.LightGray)
-                ) {
-                    Text(
-                        text = "Obstetric history",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 18.sp
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 40.dp),
-                        horizontalAlignment = Alignment.Start
+                // #3 row of data - Medical history
+                item {
+                    Card(
+                        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier.padding(10.dp),
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
                     ) {
-
-                        //Nulliparous or Parous
-                        Text(text = "Did you have at lest one pregnancy in less than 24 weeks?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                        Text(
+                            text = "Medical history",
                             modifier = Modifier
-                                .padding(all = 20.dp)
-                        ) {
-                            Checkbox(
-                                checked = nulliparous.value,
-                                onCheckedChange = {
-                                    nulliparous.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !nulliparous.value,
-                                onCheckedChange = {
-                                    nulliparous.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                    }
-                }
-            }
-            //Divider
-            item {
-                Divider(
-                    modifier = Modifier.padding(10.dp),
-                    color = MaterialTheme.colors.background
-                )
-            }
-            // #5 row of data - Biophysical measurements
-            item{
-                Card(
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier.padding(10.dp),
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                    border = BorderStroke(width = 2.dp, color = Color.LightGray)
-                ) {
-                    Text(
-                        text = "Biophysical measurements",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 18.sp
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 20.dp),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-
-                        //Mean arterial pressure
-                        textInput(
-                            text = "${MAP.value}",
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit() || char == '.'
-                                    })
-                                    MAP.value = it.take(5)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Mean arterial pressure [mm]"
+                                .padding(10.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 18.sp,
+                            color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                         )
-
-                        //Mean uterine artery
-                        textInput(
-                            text = "${UTAPI.value}",
+                        Column(
                             modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit() || char == '.'
-                                    })
-                                    UTAPI.value = it.take(5)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Mean uterine artery PI"
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, top = 40.dp),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+
+                            //Chronic hypertension
+                            Text(text = "Do you have chronic hypertension?", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                Checkbox(
+                                    checked = ch_hipertension.value,
+                                    onCheckedChange = {
+                                        ch_hipertension.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !ch_hipertension.value,
+                                    onCheckedChange = {
+                                        ch_hipertension.value = !it
+                                    },
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                            //Diabetes type I
+                            Text(text = "Do you have diabetes type I?",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                Checkbox(
+                                    checked = diabetes_type_1.value,
+                                    onCheckedChange = {
+                                        diabetes_type_1.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !diabetes_type_1.value,
+                                    onCheckedChange = {
+                                        diabetes_type_1.value = !it
+                                    },
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                            //Diabetes type II
+                            Text(text = "Do you have diabetes type II?",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                Checkbox(
+                                    checked = diabetes_type_2.value,
+                                    onCheckedChange = {
+                                        diabetes_type_2.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !diabetes_type_2.value,
+                                    onCheckedChange = {
+                                        diabetes_type_2.value = !it
+                                    },
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                            //Systemic lupus erythematosus
+                            Text(text = "Do you have lupus erythematosus?",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                Checkbox(
+                                    checked = SLE.value,
+                                    onCheckedChange = {
+                                        SLE.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !SLE.value,
+                                    onCheckedChange = {
+                                        SLE.value = !it
+                                    },
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                            //Anti-phospholipid syndrome
+                            Text(text = "Do you have anti-phospholipid syndrome?",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp)
+                            ) {
+                                Checkbox(
+                                    checked = APS.value,
+                                    onCheckedChange = {
+                                        APS.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !APS.value,
+                                    onCheckedChange = {
+                                        APS.value = !it
+                                    },
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                        }
+                    }
+                }
+                //Divider
+                item {
+                    Divider(
+                        modifier = Modifier.padding(10.dp),
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                }
+                // #4 row of data - Obstetric history
+                item {
+                    Card(
+                        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier.padding(10.dp),
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
+                    ) {
+                        Text(
+                            text = "Obstetric history",
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 18.sp,
+                            color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                         )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, top = 40.dp),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+
+                            //Nulliparous or Parous
+                            Text(text = "Did you have at lest one pregnancy in less than 24 weeks?",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(all = 20.dp)
+                            ) {
+                                Checkbox(
+                                    checked = nulliparous.value,
+                                    onCheckedChange = {
+                                        nulliparous.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !nulliparous.value,
+                                    onCheckedChange = {
+                                        nulliparous.value = !it
+                                    },
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    )
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                        }
+                    }
+                }
+                //Divider
+                item {
+                    Divider(
+                        modifier = Modifier.padding(10.dp),
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                }
+                // #5 row of data - Biophysical measurements
+                item{
+                    Card(
+                        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier.padding(10.dp),
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
+                    ) {
+                        Text(
+                            text = "Biophysical measurements",
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 18.sp,
+                            color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, top = 20.dp),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+
+                            //Mean arterial pressure
+                            textInput(
+                                text = "${MAP.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit() || char == '.'
+                                        })
+                                        MAP.value = it.take(5)
+                                },
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Mean arterial pressure [mm]",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+
+                            //Mean uterine artery
+                            textInput(
+                                text = "${UTAPI.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit() || char == '.'
+                                        })
+                                        UTAPI.value = it.take(5)
+                                },
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Mean uterine artery PI",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            )
 
                             //Date of measurements
-                        textInput(
-                            text = "${dateOfBiophysicalMeasurements.value}",
-                            modifier = Modifier
-                                .padding(top = 10.dp, bottom = 10.dp),
-                            onTextChange = {
-                                if (it.all { char ->
-                                        char.isDigit() || char == '-'
-                                    })
-                                    dateOfBiophysicalMeasurements.value = it.take(10)
-                            },
-                            keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                            label = "Date of last measurements [dd-mm-yyyy]"
-                        )
+                            textInput(
+                                text = "${dateOfBiophysicalMeasurements.value}",
+                                modifier = Modifier
+                                    .padding(top = 10.dp, bottom = 10.dp),
+                                onTextChange = {
+                                    if (it.all { char ->
+                                            char.isDigit() || char == '-'
+                                        })
+                                        dateOfBiophysicalMeasurements.value = it.take(10)
+                                },
+                                keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                                label = "Date of last measurements [dd-mm-yyyy]",
+                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
                     }
                 }
-            }
-            //Divider
-            item {
-                Divider(
-                    modifier = Modifier.padding(10.dp),
-                    color = MaterialTheme.colors.background
-                )
-            }
-            // #6 row of data - Biochemical measurements
-            item{
-                Card(
-                    backgroundColor = MaterialTheme.colors.background,
-                    modifier = Modifier.padding(10.dp),
-                    elevation = 10.dp,
-                    shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                    border = BorderStroke(width = 2.dp, color = Color.LightGray)
-                ) {
-                    Text(
-                        text = "Biochemical measurements",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Light,
-                        fontSize = 18.sp
+                //Divider
+                item {
+                    Divider(
+                        modifier = Modifier.padding(10.dp),
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                     )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 40.dp),
-                        horizontalAlignment = Alignment.Start
+                }
+                // #6 row of data - Biochemical measurements
+                item{
+                    Card(
+                        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+                        modifier = Modifier.padding(10.dp),
+                        elevation = 10.dp,
+                        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
                     ) {
-
-                        //PLGF
-                        Text(text = "Did you last measurements included PLGF serum?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                        Text(
+                            text = "Biochemical measurements",
                             modifier = Modifier
-                                .padding(all = 20.dp)
-                        ) {
-                            Checkbox(
-                                checked = plgf.value,
-                                onCheckedChange = {
-                                    plgf.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
-
-                            Checkbox(
-                                checked = !plgf.value,
-                                onCheckedChange = {
-                                    plgf.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
-                        }
-
-                        //PAPP-A
-                        Text(text = "Did you last measurements included PAPP-A serum?")
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
+                                .padding(10.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.Light,
+                            fontSize = 18.sp,
+                            color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                        Column(
                             modifier = Modifier
-                                .padding(all = 20.dp)
+                                .fillMaxWidth()
+                                .padding(start = 20.dp, top = 40.dp),
+                            horizontalAlignment = Alignment.Start
                         ) {
-                            Checkbox(
-                                checked = pappa.value,
-                                onCheckedChange = {
-                                    pappa.value = it
-                                },
-                                modifier = Modifier.padding(end = 8.dp)
-                            )
-                            Text(text = "Yes")
 
-                            Checkbox(
-                                checked = !pappa.value,
-                                onCheckedChange = {
-                                    pappa.value = !it
-                                },
-                                modifier = Modifier.padding(start = 16.dp, end = 8.dp)
-                            )
-                            Text(text = "No")
+                            //PLGF
+                            Text(text = "Did you last measurements included PLGF serum?",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(all = 20.dp)
+                            ) {
+                                Checkbox(
+                                    checked = plgf.value,
+                                    onCheckedChange = {
+                                        plgf.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !plgf.value,
+                                    onCheckedChange = {
+                                        plgf.value = !it
+                                    },
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
+                            //PAPP-A
+                            Text(text = "Did you last measurements included PAPP-A serum?",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .padding(all = 20.dp)
+                            ) {
+                                Checkbox(
+                                    checked = pappa.value,
+                                    onCheckedChange = {
+                                        pappa.value = it
+                                    },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                                Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+
+                                Checkbox(
+                                    checked = !pappa.value,
+                                    onCheckedChange = {
+                                        pappa.value = !it
+                                    },
+                                    colors = CheckboxDefaults.colors(
+                                        checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
+                                    modifier = Modifier.padding(start = 16.dp, end = 8.dp),
+                                )
+                                Text(text = "No",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
+                            }
+
                         }
-
                     }
                 }
-            }
-            // Button for saving
-            item {
-                addButton(
-
-                    text = "Save data",
-                    onClick = {
-                        if(
-                            singleton_or_twins.value.isNotEmpty() &&
-                            fetus_1.value.isNotEmpty() &&
-                            examinationDate.value.isNotEmpty() &&
-                            dayOfBirth.value.isNotEmpty() &&
-                            height.value.isNotEmpty() &&
-                            weight.value.isNotEmpty() &&
-                            racial_origin.value.isNotEmpty() &&
-                            conception_method.value.isNotEmpty() &&
-                            MAP.value.isNotEmpty() &&
-                            dateOfBiophysicalMeasurements.value.isNotEmpty()
-                        ){
-                            saveDataToJson(
-                                context, data = MaternalData(
-                                    singleton_or_twins = singleton_or_twins.value,
-                                    fetus_1 = fetus_1.value,
-                                    fetus_2 = fetus_1.value,
-                                    examinationDate = examinationDate.value,
-                                    dayOfBirth = dayOfBirth.value,
-                                    height = height.value,
-                                    weight = weight.value,
-                                    racial_origin = racial_origin.value,
-                                    smoking = smoking.value,
-                                    previous_preeclampsia = previous_preeclampsia.value,
-                                    conception_method = conception_method.value,
-                                    ch_hipertension = ch_hipertension.value,
-                                    diabetes_type_1 = diabetes_type_1.value,
-                                    diabetes_type_2 = diabetes_type_2.value,
-                                    SLE = SLE .value,
-                                    APS = APS.value,
-                                    nulliparous = nulliparous.value,
-                                    last_pregnancy_pe = last_pregnancy_pe,
-                                    last_pregnancy_delivery_weeks = last_pregnancy_delivery_weeks,
-                                    last_pregnancy_delivery_days =  last_pregnancy_delivery_days,
-                                    MAP =  MAP.value,
-                                    dateOfBiophysicalMeasurements =  dateOfBiophysicalMeasurements.value,
-                                    plgf =  plgf.value,
-                                    pappa = pappa.value,
-                                    ga_age = ga_age,
-                                    inter_pregancy_interval = inter_pregancy_interval
-                            ))
+                // Button for saving
+                item {
+                    addButton(
+                        text = "Save data",
+                        onClick = {
+                            if(
+                                singleton_or_twins.value.isNotEmpty() &&
+                                fetus_1.value.isNotEmpty() &&
+                                examinationDate.value.isNotEmpty() &&
+                                dayOfBirth.value.isNotEmpty() &&
+                                height.value.isNotEmpty() &&
+                                weight.value.isNotEmpty() &&
+                                racial_origin.value.isNotEmpty() &&
+                                conception_method.value.isNotEmpty() &&
+                                MAP.value.isNotEmpty() &&
+                                dateOfBiophysicalMeasurements.value.isNotEmpty()
+                            ){
+                                saveDataToJson(
+                                    context, data = MaternalData(
+                                        singleton_or_twins = singleton_or_twins.value,
+                                        fetus_1 = fetus_1.value,
+                                        fetus_2 = fetus_1.value,
+                                        examinationDate = examinationDate.value,
+                                        dayOfBirth = dayOfBirth.value,
+                                        height = height.value,
+                                        weight = weight.value,
+                                        racial_origin = racial_origin.value,
+                                        smoking = smoking.value,
+                                        previous_preeclampsia = previous_preeclampsia.value,
+                                        conception_method = conception_method.value,
+                                        ch_hipertension = ch_hipertension.value,
+                                        diabetes_type_1 = diabetes_type_1.value,
+                                        diabetes_type_2 = diabetes_type_2.value,
+                                        SLE = SLE .value,
+                                        APS = APS.value,
+                                        nulliparous = nulliparous.value,
+                                        last_pregnancy_pe = last_pregnancy_pe,
+                                        last_pregnancy_delivery_weeks = last_pregnancy_delivery_weeks,
+                                        last_pregnancy_delivery_days =  last_pregnancy_delivery_days,
+                                        MAP =  MAP.value,
+                                        dateOfBiophysicalMeasurements =  dateOfBiophysicalMeasurements.value,
+                                        plgf =  plgf.value,
+                                        pappa = pappa.value,
+                                        ga_age = ga_age,
+                                        inter_pregancy_interval = inter_pregancy_interval
+                                    ))
 
 
-                            Toast.makeText(context, "Data saved", Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, "Data saved", Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
+                            }
+
                         }
+                    )
+                }
 
-                    })
             }
 
         }
-
     }
+
 }
 
 private fun saveDataToJson(context: Context, data: MaternalData) {

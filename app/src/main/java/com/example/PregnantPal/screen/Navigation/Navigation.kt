@@ -1,5 +1,6 @@
 package com.example.pregnantpal.screen
 
+import SettingsScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -48,6 +49,11 @@ fun Navigation(
 
         composable(route = Screens.AdminScreen.name){
             AdminScreen(navController = navController)
+        }
+
+
+        composable(route = Screens.SettingsScreen.name){
+            SettingsScreen(navController = navController)
         }
 
         composable(
