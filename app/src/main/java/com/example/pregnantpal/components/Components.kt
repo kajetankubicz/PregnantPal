@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -69,7 +71,7 @@ fun addButton(
         enabled = enabled,
         colors = colors,
         modifier = Modifier) {
-        Text(text = text)
+        Text(text = text, fontSize = 22.sp)
         }
 }
 
