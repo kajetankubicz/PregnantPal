@@ -315,7 +315,7 @@ fun PregnantPalScreen(
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
                     ) {
                         Text(
                             text = "Maternal characteristics",
@@ -539,7 +539,7 @@ fun PregnantPalScreen(
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
                     ) {
                         Text(
                             text = "Medical history",
@@ -725,7 +725,7 @@ fun PregnantPalScreen(
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
                     ) {
                         Text(
                             text = "Obstetric history",
@@ -791,7 +791,7 @@ fun PregnantPalScreen(
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
                     ) {
                         Text(
                             text = "Biophysical measurements",
@@ -874,7 +874,7 @@ fun PregnantPalScreen(
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.secondary)
+                        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
                     ) {
                         Text(
                             text = "Biochemical measurements",

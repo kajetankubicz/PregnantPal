@@ -1,7 +1,9 @@
 package com.example.pregnantpal.screen.AdminScreen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.MaterialTheme.colors
@@ -157,7 +159,9 @@ fun ParameterCard(title: String, value: String) {
             .width(150.dp)
             .height(150.dp),
         elevation = 4.dp,
-        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
