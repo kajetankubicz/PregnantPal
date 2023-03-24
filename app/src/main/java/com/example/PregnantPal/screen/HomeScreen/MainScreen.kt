@@ -145,7 +145,7 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
         elevation = 4.dp,
         backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.5.dp, color = Color.LightGray)
+        border = BorderStroke(1.5.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
     ) {
         Column(
             modifier = Modifier
