@@ -16,12 +16,14 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -244,7 +246,12 @@ fun PregnantPalScreen(
                                             expanded = expanded.value
                                         )
                                     },
-                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer),
+                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
+                                        textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        trailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        focusedTrailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                     readOnly = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(
                                         imeAction = ImeAction.Done,
@@ -402,7 +409,12 @@ fun PregnantPalScreen(
                                             expanded = expandedRacial.value
                                         )
                                     },
-                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer),
+                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
+                                        textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        trailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        focusedTrailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                     readOnly = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(
                                         imeAction = ImeAction.Done,
@@ -433,7 +445,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         smoking.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -460,7 +475,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         previous_preeclampsia.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -499,7 +517,12 @@ fun PregnantPalScreen(
                                             expanded = expandedConception.value
                                         )
                                     },
-                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(textColor =  androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer),
+                                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
+                                        textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        trailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                                        focusedTrailingIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                     readOnly = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(
                                         imeAction = ImeAction.Done,
@@ -570,7 +593,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         ch_hipertension.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -600,7 +626,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         diabetes_type_1.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -630,7 +659,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         diabetes_type_2.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -660,7 +692,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         SLE.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -690,7 +725,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         APS.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -756,7 +794,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         nulliparous.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -905,7 +946,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         plgf.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -935,7 +979,10 @@ fun PregnantPalScreen(
                                     onCheckedChange = {
                                         pappa.value = it
                                     },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    modifier = Modifier.padding(end = 8.dp),
+                                    colors = CheckboxDefaults.colors(
+                                        uncheckedColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                    ),
                                 )
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
@@ -959,6 +1006,7 @@ fun PregnantPalScreen(
                 // Button for saving
                 item {
                     addButton(
+                        modifier = Modifier.padding(20.dp),
                         text = "Save data",
                         onClick = {
                             if(
