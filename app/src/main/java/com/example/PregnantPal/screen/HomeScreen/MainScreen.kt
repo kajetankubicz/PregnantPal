@@ -1,7 +1,7 @@
 package com.example.pregnantpal.screen
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,22 +16,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
 import com.example.pregnantpal.screen.Navigation.Screens
-import com.example.pregnantpal.ui.theme.iconsWhite
-import com.example.pregnantpal.ui.theme.pregnantPalColor
-import com.google.firebase.auth.FirebaseAuth
 
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     navController: NavController,
@@ -47,7 +42,7 @@ fun MainScreen(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(15.dp)),
-                backgroundColor = (pregnantPalColor),
+                backgroundColor = (androidx.compose.material3.MaterialTheme.colorScheme.onTertiary),
                 elevation = 5.dp,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
@@ -68,48 +63,14 @@ fun MainScreen(
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.app_name),
                         style = MaterialTheme.typography.h5,
-                        color = Color.White,
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
                         fontWeight = FontWeight.Bold
                     )
 
-                    Box {
-                        IconButton(
-                            onClick = { expanded.value = true },
-                            modifier = Modifier.padding(end = 8.dp)
-                        ) {
-                            Icon(
-                                Icons.Filled.Settings, contentDescription = "Menu",
-                                tint = Color.White
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = expanded.value,
-                            onDismissRequest = { expanded.value = false },
-                            modifier = Modifier
-                                .background(MaterialTheme.colors.onBackground, RoundedCornerShape(0.dp))
-                                .width(100.dp)
-                        ) {
-                            DropdownMenuItem(
-                                onClick = {
-                                    FirebaseAuth.getInstance().currentUser?.let {
-                                        FirebaseAuth.getInstance().signOut()
-                                        navController.navigate(route = Screens.SignInScreen.name)
-                                    }
-                                }
-                            ) {
-                                Text(
-                                    text = "Sign out",
-                                    color = MaterialTheme.colors.background,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
-
-
                 }
             }
-        }
+        },
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiary,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -146,32 +107,27 @@ fun MainScreen(
                 )
 
                 Tile(
-                    title = "Contact Us",
-                    icon = Icons.Filled.Call,
-                    onClick = { /* navigate to contact screen */ }
+                    title = "Settings",
+                    icon = Icons.Filled.Settings,
+                    onClick = { navController.navigate(route = Screens.SettingsScreen.name) }
                 )
             }
 
+            Spacer(modifier = Modifier.padding(20.dp))
 
-            Column(
+            Icon(
+                painterResource(id = R.drawable.main_image),
+                contentDescription = "Happy Pregnant Women",
+                tint = Color.Unspecified,
                 modifier = Modifier
+                    .size(500.dp)
+                    .padding(top = 20.dp, bottom = 0.dp)
                     .fillMaxWidth()
-                    .padding(top = 80.dp, start = 40.dp, end = 20.dp, bottom = 20.dp)
-            ) {
-                Text(
-                    text = "Projekt grupowy 10@KIBI'2023",
-                    fontSize = 25.sp,
-                    style = MaterialTheme.typography.caption
-                )
+                    .wrapContentSize(Alignment.Center)
+                    .height(500.dp)
+                    .wrapContentHeight(Alignment.Bottom)
+            )
 
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Text(
-                    text = "Kajetan Kubicz, Renata Bańka, Agnieszka Blok, Antoni Górecki",
-                    fontSize = 25.sp,
-                    style = MaterialTheme.typography.caption
-                )
-            }
         }
     }
 
@@ -187,7 +143,7 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .size(150.dp),
         elevation = 4.dp,
-        backgroundColor = (pregnantPalColor),
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(1.5.dp, color = Color.LightGray)
     ) {
@@ -200,14 +156,14 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = iconsWhite,
+                tint = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = title,
-                color = Color.White,
-                style = MaterialTheme.typography.subtitle1
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
             )
         }
     }
