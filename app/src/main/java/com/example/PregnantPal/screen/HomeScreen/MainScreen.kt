@@ -9,8 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,20 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
-import com.example.pregnantpal.screen.Navigation.Screens
+import com.example.PregnantPal.screen.Navigation.Screens
 
-
+//MainScreen that takes NavController as a parameter to handle navigation between screens
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     navController: NavController,
 ){
+
+    //Scaffold provides basic layout structure
     Scaffold(
         topBar = {
-
-            var expanded = remember {
-                mutableStateOf(false)
-            }
 
             TopAppBar(
                 modifier = Modifier
@@ -50,6 +46,7 @@ fun MainScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
+                    // Icon that displays jajo
                     Icon(
                         modifier = Modifier.size(48.dp),
                         painter = rememberAsyncImagePainter(R.drawable.splash_image),
@@ -135,6 +132,8 @@ fun MainScreen(
 }
 
 
+//Composable function that is used above
+// !!!Worth to remember -> This functionality needs to be added in PregnantPal Screen
 @Composable
 fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
     Card(

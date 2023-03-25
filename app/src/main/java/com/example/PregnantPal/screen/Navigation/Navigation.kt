@@ -1,4 +1,4 @@
-package com.example.pregnantpal.screen
+package com.example.PregnantPal.screen.Navigation
 
 import SettingsScreen
 import androidx.compose.runtime.Composable
@@ -8,23 +8,27 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.pregnantpal.screen.AdminScreen.AdminScreen
-import com.example.pregnantpal.screen.Login.SignUpScreen
-import com.example.pregnantpal.screen.Login.loginScreen
-import com.example.pregnantpal.screen.Navigation.Screens
-import com.example.pregnantpal.screen.Login.loginViewModel
+import com.example.PregnantPal.screen.AdminScreen.AdminScreen
+import com.example.PregnantPal.screen.login.SignUpScreen
+import com.example.PregnantPal.screen.login.loginScreen
+import com.example.PregnantPal.screen.login.loginViewModel
+import com.example.pregnantpal.screen.MainScreen
+import com.example.pregnantpal.screen.PregnantPalScreen
 
+//Function that creates navigation graph
 @Composable
 fun Navigation(
                 navController: NavHostController = rememberNavController(),
                 loginViewModel: loginViewModel
 ){
 
+    //NavHost function is ued to define the start destination and the routes for each screen of the app
+    //NavHost contains multiple composable functions that define each screen
+    //The route parameter in each composable functions defines the name of the route for that screen
     NavHost(
         navController = navController,
         startDestination = Screens.SignInScreen.name
     ){
-
 
         composable(route = Screens.SignUpScreen.name){
             SignUpScreen(onNavToHomePage = {
@@ -50,7 +54,6 @@ fun Navigation(
         composable(route = Screens.AdminScreen.name){
             AdminScreen(navController = navController)
         }
-
 
         composable(route = Screens.SettingsScreen.name){
             SettingsScreen(navController = navController)

@@ -15,8 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.pregnantpal.R
-import com.example.pregnantpal.screen.Navigation.Screens
+import com.example.PregnantPal.screen.Navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
+
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable

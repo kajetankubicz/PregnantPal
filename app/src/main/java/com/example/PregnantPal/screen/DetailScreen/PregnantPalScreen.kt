@@ -16,14 +16,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,10 +34,10 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import com.example.pregnantpal.model.MaternalData
+import com.example.PregnantPal.model.MaternalData
 import com.example.pregnantpal.R
-import com.example.pregnantpal.components.addButton
-import com.example.pregnantpal.components.textInput
+import com.example.PregnantPal.components.addButton
+import com.example.PregnantPal.components.textInput
 import com.google.gson.Gson
 import java.io.File
 
@@ -166,9 +165,11 @@ fun PregnantPalScreen(
     val last_pregnancy_delivery_days =  0
 
 
+    //Superior column that have a background color, so the space behind top bar is filed with color
     Column(modifier = Modifier
         .fillMaxSize()
         .background(androidx.compose.material3.MaterialTheme.colorScheme.tertiary)) {
+        //Secondary column that have a padding so as top bar is not sticky to the left and right edges
         Column(
             modifier = Modifier
                 .padding(6.dp)
@@ -200,6 +201,7 @@ fun PregnantPalScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
+
                 // #1 row of data - Pregnancy type and dating
                 item {
                     Card(
@@ -287,7 +289,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Fetal crown-rump length [mm] (eg. 45-84)",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
 
                             //Examination Date
@@ -303,7 +305,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Examination date [dd-mm-yyyy]",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }
                     }
@@ -354,7 +356,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Expected date of birth [dd-mm-yyyy]",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
 
                             //Height
@@ -370,7 +372,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Height [cm]",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
 
                             //Weight
@@ -386,7 +388,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Weight [kg]",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
 
                             //Racial origin
@@ -864,7 +866,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Mean arterial pressure [mm]",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
 
                             //Mean uterine artery
@@ -880,7 +882,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Mean uterine artery PI",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
 
                             //Date of measurements
@@ -896,7 +898,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Date of last measurements [dd-mm-yyyy]",
-                                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }
                     }
@@ -1049,9 +1051,8 @@ fun PregnantPalScreen(
                                         pappa = pappa.value,
                                         ga_age = ga_age,
                                         inter_pregancy_interval = inter_pregancy_interval
-                                    ))
-
-
+                                    )
+                                )
                                 Toast.makeText(context, "Data saved", Toast.LENGTH_SHORT).show()
                             }else{
                                 Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
