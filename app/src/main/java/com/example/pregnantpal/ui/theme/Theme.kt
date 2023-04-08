@@ -69,8 +69,8 @@ private val LightColorPalette = lightColorScheme(
 fun PregnantPalTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val dynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
     val colors = when{
-        dynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        dynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)
+       /* dynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
+        dynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)*/
         darkTheme -> DarkColorPalette
         else -> LightColorPalette
     }
