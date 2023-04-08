@@ -103,4 +103,10 @@ dependencies {
     implementation "androidx.compose.material3:material3:1.0.1"
     implementation "androidx.compose.material3:material3-window-size-class:1.0.1"
     implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
+
+    //Material 3 Core
+    implementation "com.maxkeppeler.sheets-compose-dialogs:core:<version>"
+
+    //Material 3 Calendar
+    implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2"
 }

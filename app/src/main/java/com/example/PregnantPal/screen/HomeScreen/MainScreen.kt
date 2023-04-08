@@ -116,7 +116,7 @@ fun MainScreen(
             Spacer(modifier = Modifier.padding(20.dp))
 
             Icon(
-                painterResource(id = R.drawable.main_image),
+                painterResource(id = R.drawable.hpw),
                 contentDescription = "Happy Pregnant Women",
                 tint = Color.Unspecified,
                 modifier = Modifier

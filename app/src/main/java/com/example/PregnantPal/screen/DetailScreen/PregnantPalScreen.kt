@@ -16,14 +16,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,9 +40,11 @@ import com.example.pregnantpal.components.addButton
 import com.example.pregnantpal.components.textInput
 import com.google.gson.Gson
 import java.io.File
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PregnantPalScreen(
     navController: NavController,
@@ -52,13 +53,17 @@ fun PregnantPalScreen(
 
     val context = LocalContext.current
 
-    val pregnancyTypes = listOf("Singleton", "Twins")
+
     var expanded = remember {
         mutableStateOf(false)
     }
 
+    val pregnancyTypes = listOf("Singleton",  "Twins")
     var singleton_or_twins = remember {
         mutableStateOf(pregnancyTypes[0])
+    }
+    var singleton_or_twins_index = remember{
+        mutableStateOf(0)
     }
 
     var fetus_1 = remember{
@@ -69,12 +74,10 @@ fun PregnantPalScreen(
         mutableStateOf("")
     }
 
-    //??
     var examinationDate = remember {
         mutableStateOf(value = "")
     }
 
-    //??
     var dayOfBirth = remember {
         mutableStateOf(value = "")
     }
@@ -91,17 +94,19 @@ fun PregnantPalScreen(
     var expandedRacial = remember {
         mutableStateOf(false)
     }
-
     var racial_origin = remember {
         mutableStateOf(racialOrigin[0])
     }
+    var racial_origin_index = remember{
+        mutableStateOf(0)
+    }
 
     var smoking = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     val previous_preeclampsia = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     val conceptionList = listOf("Spontenous", "Ovulatio drugs","In vitro fertilization")
@@ -112,29 +117,32 @@ fun PregnantPalScreen(
     var conception_method = remember {
         mutableStateOf(conceptionList[0])
     }
+    var conception_method_index = remember{
+        mutableStateOf(0)
+    }
 
     var ch_hipertension = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     var diabetes_type_1 = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     var diabetes_type_2 = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     var SLE = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     var APS = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     var nulliparous = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     var MAP = remember {
@@ -145,25 +153,24 @@ fun PregnantPalScreen(
         mutableStateOf("")
     }
 
-    //??
     var dateOfBiophysicalMeasurements = remember {
         mutableStateOf("")
     }
 
     var plgf = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
     var pappa = remember {
-        mutableStateOf(false)
+        mutableStateOf(2L)
     }
 
-    val ga_age = 0
-    val inter_pregancy_interval = 0
+    val ga_age = 0.0
+    val inter_pregancy_interval = 0L
 
-    val last_pregnancy_pe = 0
-    val last_pregnancy_delivery_weeks = 0
-    val last_pregnancy_delivery_days =  0
+    val last_pregnancy_pe = 0L
+    val last_pregnancy_delivery_weeks = 0L
+    val last_pregnancy_delivery_days =  0L
 
 
     Column(modifier = Modifier
@@ -236,9 +243,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 TextField(
-                                    value = singleton_or_twins.value,
+                                    value = pregnancyTypes[singleton_or_twins_index.value],
                                     onValueChange = {
-                                        singleton_or_twins.value = it
+                                        singleton_or_twins_index.value = pregnancyTypes.indexOf(it)
                                     },
                                     label = { Text(text = "Pregnancy Type", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)},
                                     trailingIcon = {
@@ -261,10 +268,10 @@ fun PregnantPalScreen(
                                 ExposedDropdownMenu(
                                     expanded = expanded.value,
                                     onDismissRequest = { expanded.value = false }) {
-                                    pregnancyTypes.forEach { selectionOption ->
+                                    pregnancyTypes.forEachIndexed{index,selectionOption ->
                                         DropdownMenuItem(
                                             onClick = {
-                                                singleton_or_twins.value = selectionOption
+                                                singleton_or_twins_index.value = index
                                                 expanded.value = false
                                             }) {
                                             Text(text = selectionOption)
@@ -279,16 +286,15 @@ fun PregnantPalScreen(
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp),
                                 onTextChange = {
-                                    if (it.all { char ->
-                                            char.isDigit() || char == '-'
-                                        })
-                                        fetus_1.value = it.take(5)
-                                    fetus_2.value = it.take(5)
+                                        fetus_1.value = it
+                                        fetus_2.value = it
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
-                                label = "Fetal crown-rump length [mm] (eg. 45-84)",
+                                label = "Fetal crown-rump length [mm]",
                                 textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                             )
+
+
 
                             //Examination Date
                             textInput(
@@ -304,7 +310,9 @@ fun PregnantPalScreen(
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Examination date [dd-mm-yyyy]",
                                 textColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
-                            )
+                                )
+
+
                         }
                     }
                 }
@@ -363,10 +371,7 @@ fun PregnantPalScreen(
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp),
                                 onTextChange = {
-                                    if (it.all { char ->
-                                            char.isDigit()
-                                        })
-                                        height.value = it.take(3)
+                                        height.value = it
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Height [cm]",
@@ -379,10 +384,7 @@ fun PregnantPalScreen(
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp),
                                 onTextChange = {
-                                    if (it.all { char ->
-                                            char.isDigit()
-                                        })
-                                        weight.value = it.take(3)
+                                        weight.value = it
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Weight [kg]",
@@ -399,9 +401,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 TextField(
-                                    value = racial_origin.value,
+                                    value = racialOrigin[racial_origin_index.value],
                                     onValueChange = {
-                                        racial_origin.value = it
+                                        racial_origin_index.value = racialOrigin.indexOf(it)
                                     },
                                     label = { Text(text = "Racial origin", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer) },
                                     trailingIcon = {
@@ -424,10 +426,10 @@ fun PregnantPalScreen(
                                 ExposedDropdownMenu(
                                     expanded = expandedRacial.value,
                                     onDismissRequest = { expandedRacial.value = false }) {
-                                    racialOrigin.forEach { selectionOption ->
+                                    racialOrigin.forEachIndexed {index, selectionOption ->
                                         DropdownMenuItem(
                                             onClick = {
-                                                racial_origin.value = selectionOption
+                                                racial_origin_index.value = index
                                                 expandedRacial.value = false
                                             }) {
                                             Text(text = selectionOption)
@@ -437,13 +439,12 @@ fun PregnantPalScreen(
                             }
 
                             //Smoking during pregnancy
-
                             Text(text = "Have you smoked during pregnancy?", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Checkbox(
-                                    checked = smoking.value,
+                                    checked = smoking.value == 1L,
                                     onCheckedChange = {
-                                        smoking.value = it
+                                        smoking.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -453,9 +454,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !smoking.value,
+                                    checked = smoking.value == 2L,
                                     onCheckedChange = {
-                                        smoking.value = !it
+                                        smoking.value = if(it) 2 else 1
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
@@ -471,9 +472,9 @@ fun PregnantPalScreen(
                             Text(text = "Have your mather had PE?", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Checkbox(
-                                    checked = previous_preeclampsia.value,
+                                    checked = previous_preeclampsia.value == 1L,
                                     onCheckedChange = {
-                                        previous_preeclampsia.value = it
+                                        previous_preeclampsia.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -483,9 +484,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !previous_preeclampsia.value,
+                                    checked = previous_preeclampsia.value == 2L,
                                     onCheckedChange = {
-                                        previous_preeclampsia.value = !it
+                                        previous_preeclampsia.value = if(it) 2 else 1
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
@@ -507,9 +508,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 TextField(
-                                    value = conception_method.value,
+                                    value = conceptionList[conception_method_index.value],
                                     onValueChange = {
-                                        conception_method.value = it
+                                        conception_method_index.value = conceptionList.indexOf(it)
                                     },
                                     label = { Text(text = "Conception method", color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer) },
                                     trailingIcon = {
@@ -532,10 +533,10 @@ fun PregnantPalScreen(
                                 ExposedDropdownMenu(
                                     expanded = expandedConception.value,
                                     onDismissRequest = { expandedConception.value = false }) {
-                                    conceptionList.forEach { selectionOption ->
+                                    conceptionList.forEachIndexed {index, selectionOption ->
                                         DropdownMenuItem(
                                             onClick = {
-                                                conception_method.value = selectionOption
+                                                conception_method_index.value = index
                                                 expandedConception.value = false
                                             }) {
                                             Text(text = selectionOption)
@@ -589,9 +590,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 Checkbox(
-                                    checked = ch_hipertension.value,
+                                    checked = ch_hipertension.value == 1L,
                                     onCheckedChange = {
-                                        ch_hipertension.value = it
+                                        ch_hipertension.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -601,9 +602,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !ch_hipertension.value,
+                                    checked = ch_hipertension.value == 2L,
                                     onCheckedChange = {
-                                        ch_hipertension.value = !it
+                                        ch_hipertension.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -622,9 +623,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 Checkbox(
-                                    checked = diabetes_type_1.value,
+                                    checked = diabetes_type_1.value == 1L,
                                     onCheckedChange = {
-                                        diabetes_type_1.value = it
+                                        diabetes_type_1.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -634,9 +635,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !diabetes_type_1.value,
+                                    checked = diabetes_type_1.value == 2L,
                                     onCheckedChange = {
-                                        diabetes_type_1.value = !it
+                                        diabetes_type_1.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -655,9 +656,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 Checkbox(
-                                    checked = diabetes_type_2.value,
+                                    checked = diabetes_type_2.value == 1L,
                                     onCheckedChange = {
-                                        diabetes_type_2.value = it
+                                        diabetes_type_2.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -667,9 +668,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !diabetes_type_2.value,
+                                    checked = diabetes_type_2.value == 2L,
                                     onCheckedChange = {
-                                        diabetes_type_2.value = !it
+                                        diabetes_type_2.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -688,9 +689,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 Checkbox(
-                                    checked = SLE.value,
+                                    checked = SLE.value == 1L,
                                     onCheckedChange = {
-                                        SLE.value = it
+                                        SLE.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -700,9 +701,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !SLE.value,
+                                    checked = SLE.value == 2L,
                                     onCheckedChange = {
-                                        SLE.value = !it
+                                        SLE.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -721,9 +722,9 @@ fun PregnantPalScreen(
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 Checkbox(
-                                    checked = APS.value,
+                                    checked = APS.value == 1L,
                                     onCheckedChange = {
-                                        APS.value = it
+                                        APS.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -733,9 +734,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !APS.value,
+                                    checked = APS.value == 2L,
                                     onCheckedChange = {
-                                        APS.value = !it
+                                        APS.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -790,9 +791,9 @@ fun PregnantPalScreen(
                                     .padding(all = 20.dp)
                             ) {
                                 Checkbox(
-                                    checked = nulliparous.value,
+                                    checked = nulliparous.value == 1L,
                                     onCheckedChange = {
-                                        nulliparous.value = it
+                                        nulliparous.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -802,9 +803,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !nulliparous.value,
+                                    checked = nulliparous.value == 2L,
                                     onCheckedChange = {
-                                        nulliparous.value = !it
+                                        nulliparous.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -942,9 +943,9 @@ fun PregnantPalScreen(
                                     .padding(all = 20.dp)
                             ) {
                                 Checkbox(
-                                    checked = plgf.value,
+                                    checked = plgf.value == 1L,
                                     onCheckedChange = {
-                                        plgf.value = it
+                                        plgf.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -954,9 +955,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !plgf.value,
+                                    checked = plgf.value == 2L,
                                     onCheckedChange = {
-                                        plgf.value = !it
+                                        plgf.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -975,9 +976,9 @@ fun PregnantPalScreen(
                                     .padding(all = 20.dp)
                             ) {
                                 Checkbox(
-                                    checked = pappa.value,
+                                    checked = pappa.value ==1L ,
                                     onCheckedChange = {
-                                        pappa.value = it
+                                        pappa.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -987,9 +988,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
 
                                 Checkbox(
-                                    checked = !pappa.value,
+                                    checked = pappa.value == 2L,
                                     onCheckedChange = {
-                                        pappa.value = !it
+                                        pappa.value = if(it) 2 else 1
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = androidx.compose.material3.MaterialTheme.colorScheme.error,
@@ -1011,10 +1012,11 @@ fun PregnantPalScreen(
                         onClick = {
                             if(
                                 singleton_or_twins.value.isNotEmpty() &&
+                                weight.value.isNotEmpty() &&
+                                height.value.isNotEmpty() &&
                                 fetus_1.value.isNotEmpty() &&
                                 examinationDate.value.isNotEmpty() &&
                                 dayOfBirth.value.isNotEmpty() &&
-                                height.value.isNotEmpty() &&
                                 weight.value.isNotEmpty() &&
                                 racial_origin.value.isNotEmpty() &&
                                 conception_method.value.isNotEmpty() &&
@@ -1023,17 +1025,17 @@ fun PregnantPalScreen(
                             ){
                                 saveDataToJson(
                                     context, data = MaternalData(
-                                        singleton_or_twins = singleton_or_twins.value,
-                                        fetus_1 = fetus_1.value,
-                                        fetus_2 = fetus_1.value,
-                                        examinationDate = examinationDate.value,
-                                        dayOfBirth = dayOfBirth.value,
-                                        height = height.value,
-                                        weight = weight.value,
-                                        racial_origin = racial_origin.value,
+                                        singleton_or_twins = singleton_or_twins_index.value + 1L,
+                                        fetus_1 = fetus_1.value.toLong(),
+                                        fetus_2 = fetus_2.value.toLong(),
+                                        examinationDate = LocalDate.parse(examinationDate.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
+                                        dayOfBirth = LocalDate.parse(dayOfBirth.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
+                                        height = height.value.toLong(),
+                                        weight = weight.value.toLong(),
+                                        racial_origin = racial_origin_index.value + 1L,
                                         smoking = smoking.value,
                                         previous_preeclampsia = previous_preeclampsia.value,
-                                        conception_method = conception_method.value,
+                                        conception_method =conception_method_index.value +1L,
                                         ch_hipertension = ch_hipertension.value,
                                         diabetes_type_1 = diabetes_type_1.value,
                                         diabetes_type_2 = diabetes_type_2.value,
@@ -1043,16 +1045,14 @@ fun PregnantPalScreen(
                                         last_pregnancy_pe = last_pregnancy_pe,
                                         last_pregnancy_delivery_weeks = last_pregnancy_delivery_weeks,
                                         last_pregnancy_delivery_days =  last_pregnancy_delivery_days,
-                                        MAP =  MAP.value,
-                                        dateOfBiophysicalMeasurements =  dateOfBiophysicalMeasurements.value,
+                                        MAP =  MAP.value.toFloat(),
+                                        dateOfBiophysicalMeasurements =  LocalDate.parse(dateOfBiophysicalMeasurements.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
                                         plgf =  plgf.value,
                                         pappa = pappa.value,
-                                        ga_age = ga_age,
-                                        inter_pregancy_interval = inter_pregancy_interval
+                                        ga_age = ga_age.toFloat(),
+                                        inter_pregancy_interval = inter_pregancy_interval,
+                                        UTAPI = UTAPI.value.toFloat()
                                     ))
-
-
-                                Toast.makeText(context, "Data saved", Toast.LENGTH_SHORT).show()
                             }else{
                                 Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
                             }
