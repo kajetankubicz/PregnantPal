@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.pregnantpal.screen.Login.loginViewModel
-import com.example.pregnantpal.screen.Navigation
+import com.example.PregnantPal.screen.login.loginViewModel
+import com.example.PregnantPal.screen.Navigation.Navigation
 import com.example.pregnantpal.ui.theme.PregnantPalTheme
 
 class MainActivity : ComponentActivity() {

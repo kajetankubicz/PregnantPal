@@ -1,7 +1,9 @@
-package com.example.pregnantpal.model
+package com.example.PregnantPal.model
 
 import java.time.LocalDateTime
 import java.util.UUID
+
+//Class with data that will be used in classification network
 
 data class MaternalData(
     val id: UUID = UUID.randomUUID(),

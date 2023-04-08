@@ -1,4 +1,4 @@
-package com.example.pregnantpal.repository
+package com.example.PregnantPal.repository
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -13,6 +13,8 @@ class AuthRepository {
     fun hasUser():Boolean = Firebase.auth.currentUser != null
     fun getUserId(): String = Firebase.auth.currentUser?.uid.orEmpty()
 
+
+    //Create new user that will be added to firebase
     suspend fun createUser(
         email: String,
         password: String,
@@ -41,6 +43,7 @@ class AuthRepository {
             }.await()
     }
 
+    //Logs in the user if email and password are correct
     suspend fun login(
         email: String,
         password: String,

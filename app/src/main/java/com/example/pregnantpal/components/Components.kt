@@ -1,4 +1,4 @@
-package com.example.pregnantpal.components
+package com.example.PregnantPal.components
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -13,6 +13,9 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+
+
+//File that contains our own composable functions
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

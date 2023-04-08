@@ -1,4 +1,4 @@
-package com.example.pregnantpal.screen.Login
+package com.example.PregnantPal.screen.login
 
 import android.content.Context
 import android.widget.Toast
@@ -7,14 +7,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pregnantpal.repository.AuthRepository
+import com.example.PregnantPal.repository.AuthRepository
 import kotlinx.coroutines.launch
 
 class loginViewModel(
     private val repository: AuthRepository = AuthRepository(),
 ) :ViewModel() {
 
-    val currentUser = repository.currentUser
     val hasUser: Boolean
         get() = repository.hasUser()
 
@@ -48,20 +47,25 @@ class loginViewModel(
         loginUiState.userNameSignUp.isNotBlank() && loginUiState.passwordSignUp.isNotBlank() && loginUiState.confirmedPasswordSingUp.isNotBlank()
 
 
+    //Function that creates user using provided information form the loginUiState
     fun createUser(context: Context) = viewModelScope.launch {
         try {
+            //Check sign-up form
             if( !validateSignUpForm() ){
                 throw java.lang.IllegalArgumentException("email and password can not be empty")
             }
+            //Set loginUiState isLoading flag to true before calling te repository
             loginUiState = loginUiState.copy(isLoading = true)
             if(loginUiState.passwordSignUp != loginUiState.confirmedPasswordSingUp){
                 throw IllegalArgumentException("Passwords do not match")
             }
             loginUiState = loginUiState.copy(signUpError = null)
+            //Update the loginUiState
             repository.createUser(
                 loginUiState.userNameSignUp,
                 loginUiState.passwordSignUp
             ){ isSuccessful ->
+                //If login is successful that loginUiState isSuccessLogin flag is set to true and on the screen Toast message is shown
                 if(isSuccessful){
                     Toast.makeText(
                         context,
@@ -69,7 +73,9 @@ class loginViewModel(
                         Toast.LENGTH_SHORT
                     ).show()
                     loginUiState = loginUiState.copy(isSuccessLogin = true)
-                }else{
+                }
+                //If login is unsuccessful that loginUiState isSuccessLogin flag is set to false and on the screen Toast message is shown
+                else{
                     Toast.makeText(
                         context,
                         "Unsuccessful login",
@@ -78,6 +84,7 @@ class loginViewModel(
                     loginUiState = loginUiState.copy(isSuccessLogin = false)
                 }
             }
+            //If the exception is caught during the process of login it updates the loginUiState signUpError flag
         }catch (e: Exception){
             loginUiState = loginUiState.copy(signUpError = e.localizedMessage)
             e.printStackTrace()
@@ -122,6 +129,7 @@ class loginViewModel(
     }
 }
 
+//Data class that defines the state of the login screen
 data class LoginUiState(
     val userName: String = "",
     val password: String = "",

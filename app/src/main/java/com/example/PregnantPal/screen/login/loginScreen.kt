@@ -1,10 +1,9 @@
-package com.example.pregnantpal.screen.Login
+package com.example.PregnantPal.screen.login
 
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
@@ -12,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -21,6 +19,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+//Composable function that created login screen
+//LoginViewModel menages state of login screen
+//onNav... callback functions that are invoked when the used navigates to home, sign up or admin page
 @Composable
 fun loginScreen(
     loginViewModel: loginViewModel? = null,
@@ -46,6 +47,8 @@ fun loginScreen(
             color = androidx.compose.material3.MaterialTheme.colorScheme.primary
         )
 
+        //First thing that app does
+        //If the error exits than it is displayed
         if (isError){
             Text(
                 text = loginUiState?.loginError ?: "unknown error",
@@ -53,6 +56,7 @@ fun loginScreen(
             )
         }
 
+        //Text field to fill userName = email
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -80,6 +84,8 @@ fun loginScreen(
                 unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
             )
         )
+
+        //Text field to fill password
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -144,10 +150,12 @@ fun loginScreen(
 
         }
 
+        //If user correctly filled email and password fields that for a short moment the Circular Progress Indicator is displayed on the screen
         if (loginUiState?.isLoading == true){
             CircularProgressIndicator()
         }
 
+        //That functions performs background task to check whether  the user is an admin or a regular user and navigates to the appropriate  screen
         LaunchedEffect(key1 = loginViewModel?.hasUser){
             val userId = Firebase.auth.currentUser?.uid
             if(loginViewModel?.hasUser == true) {

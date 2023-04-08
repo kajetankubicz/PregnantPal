@@ -1,4 +1,4 @@
-package com.example.pregnantpal.screen.AdminScreen
+package com.example.PregnantPal.screen.AdminScreen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -6,10 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,16 +21,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
-import com.example.pregnantpal.screen.Navigation.Screens
+import com.example.PregnantPal.screen.Navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
 
+//Admin screen that takes NavController as a parameter to handle navigation between screens
 @Composable
 fun AdminScreen(
     navController: NavController
 ) {
     Scaffold(
+        //Top bar includes a logo, app name, and dropdown menu that contains sign out button
         topBar = {
 
+            //Mutable state that is used to determine whether dropdown menu is expanded or not
             var expanded = remember {
                 mutableStateOf(false)
             }
@@ -109,6 +110,8 @@ fun AdminScreen(
         },
         backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiary,
     ) {
+
+        //Everything beneath top bar
         Column(
             modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
