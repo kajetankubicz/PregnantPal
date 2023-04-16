@@ -1,4 +1,4 @@
-package com.example.pregnantpal.screen
+package com.example.PregnantPal.screen.HomeScreen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke

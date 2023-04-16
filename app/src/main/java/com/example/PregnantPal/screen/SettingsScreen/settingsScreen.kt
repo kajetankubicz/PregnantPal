@@ -6,6 +6,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -14,17 +15,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.PregnantPal.ui.theme.PregnantPalTheme
 import com.example.pregnantpal.R
-import com.example.PregnantPal.screen.Navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
-
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SettingsScreen(
-    navController: NavController
+    navController: NavController, isLightTheme: MutableState<Boolean>
 ) {
-
     Column( modifier = Modifier
         .background(androidx.compose.material3.MaterialTheme.colorScheme.tertiary)
         .fillMaxSize()
@@ -79,15 +78,16 @@ fun SettingsScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)
                 ) {
                     Button(
                         onClick = {
                             FirebaseAuth.getInstance().currentUser?.let {
                                 FirebaseAuth.getInstance().signOut()
-                                navController.navigate(route = Screens.SignInScreen.name)
+                                navController.navigate(route = com.example.PregnantPal.screen.Navigation.Screens.SignInScreen.name)
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
@@ -101,8 +101,29 @@ fun SettingsScreen(
                         )
                     }
                 }
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center)
+                ) {
+                    Button(
+                        onClick = {
+                            isLightTheme.value = !isLightTheme.value
+                        },
+                        Modifier.padding(16.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiary,
+                            contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                    ) {
+                        Text(
+                            text = "Change theme",
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
     }
-
 }

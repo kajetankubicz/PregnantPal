@@ -1,4 +1,4 @@
-package com.example.pregnantpal.ui.theme
+package com.example.PregnantPal.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

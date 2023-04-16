@@ -1,11 +1,10 @@
-package com.example.pregnantpal.ui.theme
+package com.example.PregnantPal.ui.theme
 
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorPalette = darkColorScheme(
     primary = Green80,
@@ -66,13 +65,12 @@ private val LightColorPalette = lightColorScheme(
 )
 
 @Composable
-fun PregnantPalTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    val dynamicColors = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-    val colors = when{
-       /* dynamicColors && darkTheme -> dynamicDarkColorScheme(LocalContext.current)
-        dynamicColors && !darkTheme -> dynamicLightColorScheme(LocalContext.current)*/
-        darkTheme -> DarkColorPalette
-        else -> LightColorPalette
+fun PregnantPalTheme(isLightTheme: MutableState<Boolean>, content: @Composable () -> Unit) {
+    val colors = remember(isLightTheme.value) {
+        when (isLightTheme.value) {
+            true -> LightColorPalette
+            false -> DarkColorPalette
+        }
     }
 
     MaterialTheme(

@@ -8,12 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.PregnantPal.MainActivity
 import com.example.PregnantPal.screen.AdminScreen.AdminScreen
 import com.example.PregnantPal.screen.login.SignUpScreen
 import com.example.PregnantPal.screen.login.loginScreen
 import com.example.PregnantPal.screen.login.loginViewModel
-import com.example.pregnantpal.screen.MainScreen
-import com.example.pregnantpal.screen.PregnantPalScreen
+import com.example.PregnantPal.screen.HomeScreen.MainScreen
+import com.example.PregnantPal.screen.DetailScreen.PregnantPalScreen
 
 //Function that creates navigation graph
 @Composable
@@ -56,7 +57,8 @@ fun Navigation(
         }
 
         composable(route = Screens.SettingsScreen.name){
-            SettingsScreen(navController = navController)
+            val mainActivity = MainActivity()
+            SettingsScreen(navController = navController,mainActivity.isLightTheme)
         }
 
         composable(
