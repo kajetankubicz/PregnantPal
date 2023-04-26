@@ -1,0 +1,94 @@
+[
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/xml_backup_rules.xml.flat",
+        "source": "com.example.pregnantpal.app-main-63:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-hdpi_ic_launcher.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-hdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/raw_random_forest_all.pickle.flat",
+        "source": "com.example.pregnantpal.app-main-63:/raw/random_forest_all.pickle"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xxxhdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xxxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xxxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xxxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-mdpi_ic_launcher_foreground.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-mdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xxhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/drawable_hpw.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/drawable/hpw.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-hdpi_ic_launcher_foreground.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-hdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.pregnantpal.app-main-63:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xhdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/drawable-v24_splash_image.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/drawable-v24/splash_image.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-mdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/drawable_main_image.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/drawable/main_image.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-hdpi/ic_launcher_round.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "com.example.pregnantpal.app-main-63:/drawable-v24/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-xxhdpi_ic_launcher_foreground.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-xxhdpi/ic_launcher_foreground.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/mipmap-mdpi_ic_launcher.png.flat",
+        "source": "com.example.pregnantpal.app-main-63:/mipmap-mdpi/ic_launcher.png"
+    },
+    {
+        "merged": "com.example.pregnantpal.app-merged_res-61:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.pregnantpal.app-main-63:/xml/data_extraction_rules.xml"
+    }
+]

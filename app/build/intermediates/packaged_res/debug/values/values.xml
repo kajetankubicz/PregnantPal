@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="ic_launcher_background">#382244</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">PregnantPal</string>
+    <string name="default_web_client_id" translatable="false">322281678038-u97boftu7qfd9aspgl2flqhngpspslu5.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">322281678038</string>
+    <string name="google_api_key" translatable="false">AIzaSyDM6sdvPf3o8v2MHdKsY9VHcjGfHYLG754</string>
+    <string name="google_app_id" translatable="false">1:322281678038:android:5c661c7dc746abe1aad577</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDM6sdvPf3o8v2MHdKsY9VHcjGfHYLG754</string>
+    <string name="google_storage_bucket" translatable="false">pregnantpal.appspot.com</string>
+    <string name="project_id" translatable="false">pregnantpal</string>
+    <style name="Theme.PregnantPal" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+</resources>
