@@ -1,4 +1,4 @@
-package com.example.pregnantpal.screen
+package com.example.PregnantPal.screen.HomeScreen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -9,8 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,28 +20,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.PregnantPal.screen.Navigation.Screens
 import com.example.pregnantpal.R
-import com.example.pregnantpal.screen.Navigation.Screens
-import com.example.pregnantpal.theme.iconsWhite
-import com.example.pregnantpal.theme.pregnantPalColor
 
-
+//MainScreen that takes NavController as a parameter to handle navigation between screens
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun MainScreen(
     navController: NavController,
 ){
+
+    //Scaffold provides basic layout structure
     Scaffold(
         topBar = {
-            var expanded = remember {
-                mutableStateOf(false)
-            }
 
             TopAppBar(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(15.dp)),
-                backgroundColor = (pregnantPalColor),
+                backgroundColor = (androidx.compose.material3.MaterialTheme.colorScheme.onTertiary),
                 elevation = 5.dp,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
@@ -51,6 +46,7 @@ fun MainScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
+                    // Icon that displays jajo
                     Icon(
                         modifier = Modifier.size(48.dp),
                         painter = rememberAsyncImagePainter(R.drawable.splash_image),
@@ -64,22 +60,20 @@ fun MainScreen(
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.app_name),
                         style = MaterialTheme.typography.h5,
-                        color = Color.White,
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
                         fontWeight = FontWeight.Bold
                     )
 
                 }
             }
-        }
+        },
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiary,
     ) {
-
-        Column(modifier = Modifier
-            .padding(top = 30.dp)
-            .fillMaxSize()
-        ) {
+        Column(modifier = Modifier.fillMaxSize()) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(top = 32.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Tile(
@@ -92,14 +86,15 @@ fun MainScreen(
                     title = "Fill Data",
                     icon = Icons.Filled.Edit,
                     onClick = {
-                        navController.navigate(route = Screens.PregnantPalScreen.name+"/pregnantPal_screen")
+                        navController.navigate(route = Screens.PregnantPalScreen.name)
                     }
                 )
             }
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(top = 32.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 Tile(
@@ -118,7 +113,7 @@ fun MainScreen(
             Spacer(modifier = Modifier.padding(20.dp))
 
             Icon(
-                painterResource(id = R.drawable.main_image),
+                painterResource(id = R.drawable.hpw),
                 contentDescription = "Happy Pregnant Women",
                 tint = Color.Unspecified,
                 modifier = Modifier
@@ -133,9 +128,12 @@ fun MainScreen(
         }
     }
 
+
 }
 
 
+//Composable function that is used above
+// !!!Worth to remember -> This functionality needs to be added in PregnantPal Screen
 @Composable
 fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
     Card(
@@ -144,9 +142,9 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
             .clickable(onClick = onClick)
             .size(150.dp),
         elevation = 4.dp,
-        backgroundColor = (pregnantPalColor),
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
         shape = RoundedCornerShape(8.dp),
-        border = BorderStroke(1.5.dp, color = Color.LightGray)
+        border = BorderStroke(1.5.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
     ) {
         Column(
             modifier = Modifier
@@ -157,14 +155,14 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = iconsWhite,
+                tint = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = title,
-                color = Color.White,
-                style = MaterialTheme.typography.subtitle1
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
             )
         }
     }

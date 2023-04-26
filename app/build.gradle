@@ -32,7 +32,6 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -54,12 +53,12 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation 'androidx.activity:activity-compose:1.3.1'
     implementation "androidx.compose.ui:ui:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
-    implementation 'androidx.compose.material:material:1.3.1'
+    implementation 'androidx.compose.material:material:1.1.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -67,35 +66,47 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-
-    //ViewModel
+    //viewmodel
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
 
     //.json
     implementation 'com.google.code.gson:gson:2.8.9'
 
-    //Navigation
+    //navigation
     def nav_version = "2.5.3"
     implementation "androidx.navigation:navigation-compose:$nav_version"
-    implementation("androidx.navigation:navigation-compose:2.5.3") { transitive(true) }
 
-    //Coil
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    //coil
+    implementation "io.coil-kt:coil:2.2.2"
+    implementation "io.coil-kt:coil-compose:2.2.2"
 
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
-
-    //Authentication
+    //authentication
     implementation 'com.google.firebase:firebase-auth-ktx'
 
-    //Firestore
+    //firestore
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-auth:21.1.0'
-
-    //Coroutine
+    //firestore admin
+    // coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
+    //navigation
+    implementation("androidx.navigation:navigation-compose:2.5.3") {
+        transitive(true)
+    }
 
     //Tensorflow Lite
     implementation 'org.tensorflow:tensorflow-lite:2.6.0'
     implementation 'org.tensorflow:tensorflow-lite-support:0.2.0'
+
+    implementation "androidx.compose.material3:material3:1.0.1"
+    implementation "androidx.compose.material3:material3-window-size-class:1.0.1"
+    implementation "com.google.accompanist:accompanist-flowlayout:0.24.8-beta"
+
+    //Material 3 Core
+    implementation "com.maxkeppeler.sheets-compose-dialogs:core:<version>"
+
+    //Material 3 Calendar
+    implementation "com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2"
 }

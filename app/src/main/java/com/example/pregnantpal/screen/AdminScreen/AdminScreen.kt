@@ -1,7 +1,9 @@
-package com.example.pregnantpal.screen.AdminScreen
+package com.example.PregnantPal.screen.AdminScreen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,17 +21,19 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
-import com.example.pregnantpal.screen.Navigation.Screens
-import com.example.pregnantpal.theme.pregnantPalColor
+import com.example.PregnantPal.screen.Navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
 
+//Admin screen that takes NavController as a parameter to handle navigation between screens
 @Composable
 fun AdminScreen(
     navController: NavController
 ) {
     Scaffold(
+        //Top bar includes a logo, app name, and dropdown menu that contains sign out button
         topBar = {
 
+            //Mutable state that is used to determine whether dropdown menu is expanded or not
             var expanded = remember {
                 mutableStateOf(false)
             }
@@ -38,7 +42,7 @@ fun AdminScreen(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(15.dp)),
-                backgroundColor = (pregnantPalColor),
+                backgroundColor = (androidx.compose.material3.MaterialTheme.colorScheme.onTertiary),
                 elevation = 5.dp,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
@@ -59,7 +63,7 @@ fun AdminScreen(
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.app_name),
                         style = MaterialTheme.typography.h5,
-                        color = Color.White,
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
                         fontWeight = FontWeight.Bold
                     )
 
@@ -70,15 +74,18 @@ fun AdminScreen(
                         ) {
                             Icon(
                                 Icons.Filled.Settings, contentDescription = "Menu",
-                                tint = MaterialTheme.colors.background
+                                tint = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         }
                         DropdownMenu(
                             expanded = expanded.value,
                             onDismissRequest = { expanded.value = false },
                             modifier = Modifier
-                                .background(MaterialTheme.colors.onBackground, RoundedCornerShape(0.dp))
-                                .width(100.dp)
+                                .background(
+                                    androidx.compose.material3.MaterialTheme.colorScheme.secondaryContainer,
+                                    RoundedCornerShape(0.dp)
+                                )
+                                .width(95.dp)
                         ) {
                             DropdownMenuItem(
                                 onClick = {
@@ -90,7 +97,7 @@ fun AdminScreen(
                             ) {
                                 Text(
                                     text = "Sign out",
-                                    color = MaterialTheme.colors.background,
+                                    color = androidx.compose.material3.MaterialTheme.colorScheme.onSecondaryContainer,
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -100,8 +107,11 @@ fun AdminScreen(
 
                 }
             }
-        }
+        },
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiary,
     ) {
+
+        //Everything beneath top bar
         Column(
             modifier = Modifier.padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -109,7 +119,8 @@ fun AdminScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Welcome, Admin!",
-                style = MaterialTheme.typography.h5
+                style = androidx.compose.material3.MaterialTheme.typography.displayMedium,
+                color = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(
@@ -150,21 +161,26 @@ fun ParameterCard(title: String, value: String) {
             .padding(8.dp)
             .width(150.dp)
             .height(150.dp),
-        elevation = 4.dp
+        elevation = 4.dp,
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+        shape = RoundedCornerShape(corner = CornerSize(10.dp)),
+        border = BorderStroke(width = 2.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.h6,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = value,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
             )
         }
     }

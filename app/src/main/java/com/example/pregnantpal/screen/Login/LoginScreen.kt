@@ -1,6 +1,7 @@
-package com.example.pregnantpal.screen.Login
+package com.example.PregnantPal.screen.login
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,18 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.pregnantpal.components.GoogleButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+//Composable function that created login screen
+//LoginViewModel menages state of login screen
+//onNav... callback functions that are invoked when the used navigates to home, sign up or admin page
 @Composable
-fun LoginScreen(
+fun loginScreen(
     loginViewModel: loginViewModel? = null,
     onNavToHomePage:() -> Unit,
     onNavToSignUpPage:() -> Unit,
@@ -33,23 +35,28 @@ fun LoginScreen(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "Login",
-            style = MaterialTheme.typography.h3,
+            style = androidx.compose.material3.MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Black,
-            color = MaterialTheme.colors.primary
+            color = androidx.compose.material3.MaterialTheme.colorScheme.primary
         )
 
+        //First thing that app does
+        //If the error exits than it is displayed
         if (isError){
             Text(
                 text = loginUiState?.loginError ?: "unknown error",
-                color = Color.Red,
+                color = androidx.compose.material3.MaterialTheme.colorScheme.error
             )
         }
 
+        //Text field to fill userName = email
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,13 +67,25 @@ fun LoginScreen(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
-                Text(text = "Email")
+                Text(
+                    text = "Email",
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+
+                )
             },
-            isError = isError
+            isError = isError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
+            )
         )
+
+        //Text field to fill password
         OutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth()
@@ -77,17 +96,35 @@ fun LoginScreen(
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
-                Text(text = "Password")
+                Text(
+                    text = "Password",
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+                )
             },
             visualTransformation = PasswordVisualTransformation(),
-            isError = isError
+            isError = isError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
+            )
         )
 
-        Button(onClick = { loginViewModel?.loginUser(context) }) {
-            Text(text = "Sign In")
+        Button(
+            onClick = { loginViewModel?.loginUser(context) },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseSurface,
+                contentColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseOnSurface
+            )
+
+        ) {
+            Text(
+                text = "Sign In"
+            )
         }
         Spacer(modifier = Modifier.size(16.dp))
 
@@ -96,17 +133,29 @@ fun LoginScreen(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Don't have an Account?")
+            Text(
+                text = "Don't have an Account?",
+                color =  androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+            )
             Spacer(modifier = Modifier.size(8.dp))
-            TextButton(onClick = { onNavToSignUpPage.invoke() }) {
+            TextButton(
+                onClick = { onNavToSignUpPage.invoke() },
+                colors = ButtonDefaults.outlinedButtonColors(
+                    backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+                )) {
                 Text(text = "SignUp")
             }
+
+
         }
 
+        //If user correctly filled email and password fields that for a short moment the Circular Progress Indicator is displayed on the screen
         if (loginUiState?.isLoading == true){
             CircularProgressIndicator()
         }
-        
+
+        //That functions performs background task to check whether  the user is an admin or a regular user and navigates to the appropriate  screen
         LaunchedEffect(key1 = loginViewModel?.hasUser){
             val userId = Firebase.auth.currentUser?.uid
             if(loginViewModel?.hasUser == true) {
@@ -141,20 +190,20 @@ fun SignUpScreen(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().background(androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = "Sign Up",
-            style = MaterialTheme.typography.h3,
+            style = androidx.compose.material3.MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Black,
-            color = MaterialTheme.colors.primary
+            color = androidx.compose.material3.MaterialTheme.colorScheme.primary
         )
 
         if (isError){
             Text(
                 text = loginUiState?.signUpError ?: "unknown error",
-                color = Color.Red,
+                color = androidx.compose.material3.MaterialTheme.colorScheme.error
             )
         }
 
@@ -168,12 +217,21 @@ fun SignUpScreen(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
-                Text(text = "Email")
+                Text(
+                    text = "Email",
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+                )
             },
-            isError = isError
+            isError = isError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
+            )
         )
         OutlinedTextField(
             modifier = Modifier
@@ -185,13 +243,22 @@ fun SignUpScreen(
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
-                Text(text = "Password")
+                Text(
+                    text = "Password",
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+                )
             },
             visualTransformation = PasswordVisualTransformation(),
-            isError = isError
+            isError = isError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
+            )
         )
         OutlinedTextField(
             modifier = Modifier
@@ -203,16 +270,30 @@ fun SignUpScreen(
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
-                Text(text = "Confirm Password")
+                Text(
+                    text = "Confirm Password",
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+                )
             },
             visualTransformation = PasswordVisualTransformation(),
-            isError = isError
+            isError = isError,
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
+            )
         )
 
-        Button(onClick = { loginViewModel?.createUser(context) }) {
+        Button(
+            onClick = { loginViewModel?.createUser(context) },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseSurface,
+                contentColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseOnSurface
+            )) {
             Text(text = "Sign In")
         }
         Spacer(modifier = Modifier.size(16.dp))
@@ -221,19 +302,20 @@ fun SignUpScreen(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Already have an Account?")
+            Text(
+                text = "Already have an Account?",
+                color =  androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+            )
             Spacer(modifier = Modifier.size(8.dp))
-            TextButton(onClick = { onNavToLoginPage.invoke() }) {
+            TextButton(
+                onClick = { onNavToLoginPage.invoke() },
+                colors = ButtonDefaults.outlinedButtonColors(
+                    backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
+                )) {
                 Text(text = "Sign In")
             }
         }
-        GoogleButton(
-            text = "Sign Up with Google",
-            loadingText = "Creating Account...",
-            onClicked = {
-                Log.d("myApp", "Google Button")
-            }
-        )
 
         if (loginUiState?.isLoading == true){
             CircularProgressIndicator()

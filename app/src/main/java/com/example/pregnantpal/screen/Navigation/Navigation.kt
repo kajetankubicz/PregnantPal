@@ -1,30 +1,32 @@
-package com.example.pregnantpal.screen
+package com.example.PregnantPal.screen.Navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.example.pregnantpal.screen.AdminScreen.AdminScreen
-import com.example.pregnantpal.screen.Login.SignUpScreen
-import com.example.pregnantpal.screen.Login.LoginScreen
-import com.example.pregnantpal.screen.Navigation.Screens
-import com.example.pregnantpal.screen.Login.loginViewModel
-import com.example.pregnantpal.screen.SettingsScreen.SettingsScreen
+import com.example.PregnantPal.screen.AdminScreen.AdminScreen
+import com.example.PregnantPal.screen.login.SignUpScreen
+import com.example.PregnantPal.screen.login.loginScreen
+import com.example.PregnantPal.screen.login.loginViewModel
+import com.example.PregnantPal.screen.HomeScreen.MainScreen
+import com.example.PregnantPal.screen.DetailScreen.PregnantPalScreen
+import com.example.PregnantPal.screen.SettingsScreen.SettingsScreen
 
+//Function that creates navigation graph
 @Composable
 fun Navigation(
-    navController: NavHostController = rememberNavController(),
-    loginViewModel: loginViewModel,
+                navController: NavHostController = rememberNavController(),
+                loginViewModel: loginViewModel
 ){
 
+    //NavHost function is ued to define the start destination and the routes for each screen of the app
+    //NavHost contains multiple composable functions that define each screen
+    //The route parameter in each composable functions defines the name of the route for that screen
     NavHost(
         navController = navController,
         startDestination = Screens.SignInScreen.name
     ){
-
 
         composable(route = Screens.SignUpScreen.name){
             SignUpScreen(onNavToHomePage = {
@@ -38,7 +40,7 @@ fun Navigation(
 
                 loginViewModel = loginViewModel
 
-            ) {
+                ) {
                 navController.navigate(Screens.SignInScreen.name)
             }
         }
@@ -55,16 +57,12 @@ fun Navigation(
             SettingsScreen(navController = navController)
         }
 
-        composable(
-            route = Screens.PregnantPalScreen.name + "/{pregnantPal_screen}",
-            arguments = listOf(navArgument(name="pregnantPal_screen"){type = NavType.StringType})
-        ){backStackEntry ->
-            PregnantPalScreen(navController = navController, backStackEntry.arguments?.getString("pregnantPal_screen"))
+        composable(route = Screens.PregnantPalScreen.name){
+            PregnantPalScreen(navController = navController)
         }
 
-
         composable(route = Screens.SignInScreen.name){
-            LoginScreen(
+            loginScreen(
                 onNavToHomePage = {
                     navController.navigate(Screens.MainScreen.name){
                         launchSingleTop = true
