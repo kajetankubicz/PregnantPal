@@ -1,21 +1,22 @@
 package com.example.PregnantPal.screen.Navigation
 
 import SettingsScreen
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.PregnantPal.screen.AdminScreen.AdminScreen
+import com.example.PregnantPal.screen.DetailScreen.PregnantPalScreen
 import com.example.PregnantPal.screen.login.SignUpScreen
 import com.example.PregnantPal.screen.login.loginScreen
 import com.example.PregnantPal.screen.login.loginViewModel
 import com.example.pregnantpal.screen.MainScreen
-import com.example.pregnantpal.screen.PregnantPalScreen
 
 //Function that creates navigation graph
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Navigation(
                 navController: NavHostController = rememberNavController(),
@@ -59,11 +60,8 @@ fun Navigation(
             SettingsScreen(navController = navController)
         }
 
-        composable(
-            route = Screens.PregnantPalScreen.name + "/{pregnantPal_screen}",
-            arguments = listOf(navArgument(name="pregnantPal_screen"){type = NavType.StringType})
-        ){backStackEntry ->
-            PregnantPalScreen(navController = navController, backStackEntry.arguments?.getString("pregnantPal_screen"))
+        composable(route = Screens.PregnantPalScreen.name){
+            PregnantPalScreen(navController = navController)
         }
 
         composable(route = Screens.SignInScreen.name){

@@ -86,7 +86,7 @@ fun MainScreen(
                     title = "Fill Data",
                     icon = Icons.Filled.Edit,
                     onClick = {
-                        navController.navigate(route = Screens.PregnantPalScreen.name+"/pregnantPal_screen")
+                        navController.navigate(route = Screens.PregnantPalScreen.name)
                     }
                 )
             }
