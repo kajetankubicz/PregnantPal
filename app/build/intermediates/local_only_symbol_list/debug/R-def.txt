@@ -9,14 +9,11 @@ color teal_200
 color teal_700
 color white
 drawable hpw
-drawable ic_launcher_background
-drawable ic_launcher_foreground
 drawable main_image
 drawable splash_image
 mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
-raw random_forest_all
 string app_name
 string default_web_client_id
 string gcm_defaultSenderId

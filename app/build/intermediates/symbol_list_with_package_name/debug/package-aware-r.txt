@@ -176,8 +176,6 @@ drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable hpw
 drawable ic_100tb
-drawable ic_launcher_background
-drawable ic_launcher_foreground
 drawable main_image
 drawable notification_action_background
 drawable notification_bg
@@ -326,7 +324,6 @@ mipmap ic_launcher
 mipmap ic_launcher_foreground
 mipmap ic_launcher_round
 raw firebase_common_keep
-raw random_forest_all
 string androidx_startup
 string app_name
 string cancel
