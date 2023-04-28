@@ -1,4 +1,4 @@
-package com.example.pregnantpal.model
+package com.example.PregnantPal.model
 
 import java.time.LocalDateTime
 import java.util.UUID
@@ -22,18 +22,18 @@ data class MaternalData(
     val ch_hipertension: Long, // 1 - Yes, 2 - No
     val diabetes_type_1: Long, // 1 - Yes, 2 - No
     val diabetes_type_2: Long, // 1 - Yes, 2 - No
-    val sle: Long,  // 1 - Yes, 2 - No
-    val aps: Long, // 1 - Yes, 2 - No
+    val SLE: Long,  // 1 - Yes, 2 - No
+    val APS: Long, // 1 - Yes, 2 - No
     val nulliparous: Long,
-    val last_pregnancy_pe: Int,
-    val last_pregnancy_delivery_weeks: Int,
-    val last_pregnancy_delivery_days: Int,
-    val map: Float,
+    val last_pregnancy_pe: Long,
+    val last_pregnancy_delivery_weeks: Long,
+    val last_pregnancy_delivery_days: Long,
+    val MAP: Float,
     val dateOfBiophysicalMeasurements: Long,
     val plgf: Long,
     val pappa: Long,
-    val ga_age: Long,
-    val inter_pregancy_interval: Int,
-    val utapi: Float
+    val ga_age: Float,
+    val inter_pregancy_interval: Long,
+    val UTAPI: Float
 )
 

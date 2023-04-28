@@ -1,4 +1,4 @@
-package com.example.pregnantpal.repository
+package com.example.PregnantPal.repository
 
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth

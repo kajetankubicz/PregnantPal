@@ -1,4 +1,4 @@
-package com.example.pregnantpal.screen.login
+package com.example.PregnantPal.screen.login
 
 import android.util.Log
 import androidx.compose.foundation.background
@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import androidx.compose.material3.MaterialTheme
 
 //Composable function that created login screen
 //LoginViewModel menages state of login screen
@@ -38,15 +37,14 @@ fun loginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.primaryContainer),
+            .background(androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.size(20.dp))
         Text(
             text = "Login",
-            style = MaterialTheme.typography.displayMedium,
+            style = androidx.compose.material3.MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Black,
-            color = MaterialTheme.colorScheme.primary
+            color = androidx.compose.material3.MaterialTheme.colorScheme.primary
         )
 
         //First thing that app does
@@ -54,7 +52,7 @@ fun loginScreen(
         if (isError){
             Text(
                 text = loginUiState?.loginError ?: "unknown error",
-                color = MaterialTheme.colorScheme.error
+                color = androidx.compose.material3.MaterialTheme.colorScheme.error
             )
         }
 
@@ -69,21 +67,21 @@ fun loginScreen(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
                 Text(
                     text = "Email",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
 
                 )
             },
             isError = isError,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                focusedBorderColor = MaterialTheme.colorScheme.onBackground,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
             )
         )
 
@@ -98,29 +96,29 @@ fun loginScreen(
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
                 Text(
                     text = "Password",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             visualTransformation = PasswordVisualTransformation(),
             isError = isError,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                focusedBorderColor = MaterialTheme.colorScheme.onBackground,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
             )
         )
 
         Button(
             onClick = { loginViewModel?.loginUser(context) },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colorScheme.inverseSurface,
-                contentColor = MaterialTheme.colorScheme.inverseOnSurface
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseSurface,
+                contentColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseOnSurface
             )
 
         ) {
@@ -137,14 +135,14 @@ fun loginScreen(
         ) {
             Text(
                 text = "Don't have an Account?",
-                color =  MaterialTheme.colorScheme.onPrimaryContainer
+                color =  androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
             )
             Spacer(modifier = Modifier.size(8.dp))
             TextButton(
                 onClick = { onNavToSignUpPage.invoke() },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    backgroundColor = MaterialTheme.colorScheme.inverseSurface,
-                    contentColor = MaterialTheme.colorScheme.inverseOnSurface
+                    backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )) {
                 Text(text = "SignUp")
             }
@@ -154,7 +152,7 @@ fun loginScreen(
 
         //If user correctly filled email and password fields that for a short moment the Circular Progress Indicator is displayed on the screen
         if (loginUiState?.isLoading == true){
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            CircularProgressIndicator()
         }
 
         //That functions performs background task to check whether  the user is an admin or a regular user and navigates to the appropriate  screen
@@ -192,21 +190,20 @@ fun SignUpScreen(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primaryContainer),
+        modifier = Modifier.fillMaxSize().background(androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.size(20.dp))
         Text(
             text = "Sign Up",
-            style = MaterialTheme.typography.displayMedium,
+            style = androidx.compose.material3.MaterialTheme.typography.displayMedium,
             fontWeight = FontWeight.Black,
-            color = MaterialTheme.colorScheme.primary
+            color = androidx.compose.material3.MaterialTheme.colorScheme.primary
         )
 
         if (isError){
             Text(
                 text = loginUiState?.signUpError ?: "unknown error",
-                color = MaterialTheme.colorScheme.error
+                color = androidx.compose.material3.MaterialTheme.colorScheme.error
             )
         }
 
@@ -220,20 +217,20 @@ fun SignUpScreen(
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
                 Text(
                     text = "Email",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             isError = isError,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                focusedBorderColor = MaterialTheme.colorScheme.onBackground,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
             )
         )
         OutlinedTextField(
@@ -246,21 +243,21 @@ fun SignUpScreen(
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
                 Text(
                     text = "Password",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             visualTransformation = PasswordVisualTransformation(),
             isError = isError,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor =MaterialTheme.colorScheme.onPrimaryContainer,
-                focusedBorderColor = MaterialTheme.colorScheme.onBackground,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
             )
         )
         OutlinedTextField(
@@ -273,28 +270,28 @@ fun SignUpScreen(
                 Icon(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    tint = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             label = {
                 Text(
                     text = "Confirm Password",
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                    color = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )
             },
             visualTransformation = PasswordVisualTransformation(),
             isError = isError,
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                focusedBorderColor = MaterialTheme.colorScheme.onBackground,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                textColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.onBackground,
+                unfocusedBorderColor = androidx.compose.material3.MaterialTheme.colorScheme.outline
             )
         )
 
         Button(
             onClick = { loginViewModel?.createUser(context) },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = MaterialTheme.colorScheme.inverseSurface,
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseSurface,
                 contentColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseOnSurface
             )) {
             Text(text = "Sign In")
@@ -307,21 +304,21 @@ fun SignUpScreen(
         ) {
             Text(
                 text = "Already have an Account?",
-                color =  MaterialTheme.colorScheme.onPrimaryContainer
+                color =  androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
             )
             Spacer(modifier = Modifier.size(8.dp))
             TextButton(
                 onClick = { onNavToLoginPage.invoke() },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    backgroundColor = MaterialTheme.colorScheme.inverseSurface,
-                    contentColor = MaterialTheme.colorScheme.inverseOnSurface
+                    backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
                 )) {
                 Text(text = "Sign In")
             }
         }
 
         if (loginUiState?.isLoading == true){
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            CircularProgressIndicator()
         }
 
         LaunchedEffect(key1 = loginViewModel?.hasUser){

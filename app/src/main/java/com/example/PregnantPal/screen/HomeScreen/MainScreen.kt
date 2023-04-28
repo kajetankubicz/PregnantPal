@@ -1,13 +1,13 @@
 package com.example.pregnantpal.screen
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.pregnantpal.R
-import com.example.pregnantpal.screen.Navigation.Screens
+import com.example.PregnantPal.screen.Navigation.Screens
 
 //MainScreen that takes NavController as a parameter to handle navigation between screens
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -38,7 +38,7 @@ fun MainScreen(
                 modifier = Modifier
                     .padding(10.dp)
                     .clip(shape = RoundedCornerShape(15.dp)),
-                backgroundColor = (MaterialTheme.colorScheme.onSurface),
+                backgroundColor = (androidx.compose.material3.MaterialTheme.colorScheme.onTertiary),
                 elevation = 5.dp,
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
             ) {
@@ -59,15 +59,15 @@ fun MainScreen(
                     Text(
                         modifier = Modifier.weight(1f),
                         text = stringResource(id = R.string.app_name),
-                        style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.primaryContainer,
+                        style = MaterialTheme.typography.h5,
+                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
                         fontWeight = FontWeight.Bold
                     )
 
                 }
             }
         },
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiary,
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Row(
@@ -79,9 +79,7 @@ fun MainScreen(
                 Tile(
                     title = "My Account",
                     icon = Icons.Filled.AccountCircle,
-                    onClick = {
-                        navController.navigate(route = Screens.MyAccountScreen.name)
-                    }
+                    onClick = { /* navigate to account screen */ }
                 )
 
                 Tile(
@@ -135,6 +133,7 @@ fun MainScreen(
 
 
 //Composable function that is used above
+// !!!Worth to remember -> This functionality needs to be added in PregnantPal Screen
 @Composable
 fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
     Card(
@@ -142,9 +141,10 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
             .padding(16.dp)
             .clickable(onClick = onClick)
             .size(150.dp),
-        elevation = 2.dp,
-        backgroundColor = MaterialTheme.colorScheme.onSurface,
-        shape = RoundedCornerShape(8.dp)
+        elevation = 4.dp,
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer,
+        shape = RoundedCornerShape(8.dp),
+        border = BorderStroke(1.5.dp, color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer)
     ) {
         Column(
             modifier = Modifier
@@ -155,15 +155,14 @@ fun Tile(title: String, icon: ImageVector, onClick: () -> Unit) {
             Icon(
                 imageVector = icon,
                 contentDescription = title,
-                tint = MaterialTheme.colorScheme.primaryContainer,
-                modifier = Modifier.size(70.dp)
+                tint = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = title,
-                color =MaterialTheme.colorScheme.primaryContainer,
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.W600
+                color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
+                style = androidx.compose.material3.MaterialTheme.typography.bodyLarge
             )
         }
     }
