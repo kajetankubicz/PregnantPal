@@ -1,4 +1,4 @@
-package com.example.PregnantPal.screen.Navigation
+package com.example.pregnantpal.screen.Navigation
 
 import SettingsScreen
 import android.os.Build
@@ -8,11 +8,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.PregnantPal.screen.AdminScreen.AdminScreen
-import com.example.PregnantPal.screen.DetailScreen.PregnantPalScreen
-import com.example.PregnantPal.screen.login.SignUpScreen
-import com.example.PregnantPal.screen.login.loginScreen
-import com.example.PregnantPal.screen.login.loginViewModel
+import com.example.pregnantpal.screen.MyAccountScreen.MyAccountScreen
+import com.example.pregnantpal.screen.AdminScreen.AdminScreen
+import com.example.pregnantpal.screen.DetailScreen.PregnantPalScreen
+import com.example.pregnantpal.screen.login.SignUpScreen
+import com.example.pregnantpal.screen.login.loginScreen
+import com.example.pregnantpal.screen.login.loginViewModel
 import com.example.pregnantpal.screen.MainScreen
 
 //Function that creates navigation graph
@@ -62,6 +63,10 @@ fun Navigation(
 
         composable(route = Screens.PregnantPalScreen.name){
             PregnantPalScreen(navController = navController)
+        }
+
+        composable(route = Screens.MyAccountScreen.name){
+            MyAccountScreen(navController = navController)
         }
 
         composable(route = Screens.SignInScreen.name){

@@ -1,4 +1,4 @@
-package com.example.PregnantPal.screen.login
+package com.example.pregnantpal.screen.login
 
 import android.content.Context
 import android.widget.Toast
@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.PregnantPal.repository.AuthRepository
+import com.example.pregnantpal.repository.AuthRepository
 import kotlinx.coroutines.launch
 
 class loginViewModel(

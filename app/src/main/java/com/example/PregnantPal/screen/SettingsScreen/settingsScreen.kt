@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,30 +16,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.pregnantpal.R
-import com.example.PregnantPal.screen.Navigation.Screens
+import com.example.pregnantpal.screen.Navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SettingsScreen(
-    navController: NavController
+    navController: NavController,
 ) {
-
-    Column( modifier = Modifier
-        .background(androidx.compose.material3.MaterialTheme.colorScheme.tertiary)
-        .fillMaxSize()
+    Surface(
+        color = MaterialTheme.colorScheme.surface,
+        modifier = Modifier.fillMaxSize()
     ) {
         Column(
             modifier = Modifier
-                .padding(10.dp)
+                .padding(16.dp)
                 .fillMaxSize()
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = stringResource(id = R.string.app_name),
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                        color = MaterialTheme.colorScheme.primaryContainer
                     )
                 },
                 navigationIcon = {
@@ -46,63 +46,53 @@ fun SettingsScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Arrow Back",
-                            tint = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                            tint = MaterialTheme.colorScheme.primaryContainer
                         )
                     }
                 },
-                elevation = 5.dp,
-                backgroundColor = (androidx.compose.material3.MaterialTheme.colorScheme.onTertiary),
+                elevation = AppBarDefaults.TopAppBarElevation,
+                backgroundColor = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.clip(shape = RoundedCornerShape(15.dp))
             )
             Spacer(modifier = Modifier.size(20.dp))
             Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-                    .wrapContentSize(Alignment.Center)
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text = "Projekt grupowy 10@KIBI'2023",
                     fontSize = 25.sp,
-                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-
                 Spacer(modifier = Modifier.height(20.dp))
-
                 Text(
                     text = "Kajetan Kubicz, Renata Bańka, Agnieszka Blok, Antoni Górecki",
                     fontSize = 25.sp,
-                    style = androidx.compose.material3.MaterialTheme.typography.bodyLarge,
-                    color = androidx.compose.material3.MaterialTheme.colorScheme.tertiaryContainer
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
-
                 Spacer(modifier = Modifier.height(20.dp))
-
-                Box(modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
+                Button(
+                    onClick = {
+                        FirebaseAuth.getInstance().currentUser?.let {
+                            FirebaseAuth.getInstance().signOut()
+                            navController.navigate(route = Screens.SignInScreen.name)
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.primaryContainer
+                    ),
+                    shape = MaterialTheme.shapes.medium,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Button(
-                        onClick = {
-                            FirebaseAuth.getInstance().currentUser?.let {
-                                FirebaseAuth.getInstance().signOut()
-                                navController.navigate(route = Screens.SignInScreen.name)
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiary,
-                            contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
-                        )
-                    ) {
-                        Text(
-                            text = "Sign out",
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
+                    Text(
+                        text = "Sign out",
+                        fontWeight = FontWeight.Bold
+                    )
                 }
             }
         }
     }
-
 }
