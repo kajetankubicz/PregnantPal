@@ -1,6 +1,8 @@
-package com.example.PregnantPal.components
+package com.example.pregnantpal.components
 
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -30,6 +32,7 @@ fun textInput(
     keyboard: KeyboardOptions,
     textColor: Color? = null,
     labelColor: Color? = null,
+    unfocusedIndicator: Color? = null,
 ){
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -39,14 +42,15 @@ fun textInput(
         value = text,
         onValueChange = onTextChange,
         colors = TextFieldDefaults.textFieldColors(
-            textColor = textColor?: androidx.compose.material3.MaterialTheme.colorScheme.onPrimary,
+            textColor = textColor?: androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
             backgroundColor = Color.Transparent,
-            focusedIndicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer,
-            cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer),
+            focusedIndicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+            cursorColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+            unfocusedIndicatorColor =  unfocusedIndicator?: androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer),
         maxLines = maxLine,
         label = { Text(
                 text = label,
-                color = labelColor?: androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+                color = labelColor?: androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
             ) },
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = {
@@ -64,13 +68,13 @@ fun addButton(
     onClick: () -> Unit,
     enabled: Boolean = true,
     colors: ButtonColors = ButtonDefaults.buttonColors(
-        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiary,
-        contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onTertiaryContainer
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
+        contentColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer
     )
 ) {
     Button(
         onClick = { onClick.invoke() },
-        shape = CircleShape,
+        shape = RoundedCornerShape(20.dp),
         enabled = enabled,
         colors = colors,
         modifier = Modifier) {

@@ -1,4 +1,4 @@
-package com.example.PregnantPal.screen.DetailScreen
+package com.example.pregnantpal.screen.DetailScreen
 
 import android.Manifest
 import android.app.Activity
@@ -36,19 +36,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.navigation.NavController
-import com.example.PregnantPal.model.MaternalData
-import com.example.PregnantPal.components.addButton
-import com.example.PregnantPal.components.textInput
+import com.example.pregnantpal.model.MaternalData
+import com.example.pregnantpal.components.addButton
+import com.example.pregnantpal.components.textInput
 import com.example.pregnantpal.R
+import com.example.pregnantpal.screen.Navigation.Screens
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PregnantPalScreen(
     navController: NavController
@@ -136,11 +139,11 @@ fun PregnantPalScreen(
         mutableStateOf(2L)
     }
 
-    val SLE = remember {
+    val sle = remember {
         mutableStateOf(2L)
     }
 
-    val APS = remember {
+    val aps = remember {
         mutableStateOf(2L)
     }
 
@@ -148,11 +151,11 @@ fun PregnantPalScreen(
         mutableStateOf(2L)
     }
 
-    val MAP = remember {
+    val map = remember {
         mutableStateOf("")
     }
 
-    val UTAPI = remember {
+    val utapi = remember {
         mutableStateOf("")
     }
 
@@ -168,18 +171,18 @@ fun PregnantPalScreen(
         mutableStateOf(2L)
     }
 
-    val ga_age = 0.0
-    val inter_pregancy_interval = 0L
+    val ga_age = 30f
+    val inter_pregancy_interval = 0
 
-    val last_pregnancy_pe = 0L
-    val last_pregnancy_delivery_weeks = 0L
-    val last_pregnancy_delivery_days =  0L
+    val last_pregnancy_pe = 2
+    val last_pregnancy_delivery_weeks = 40
+    val last_pregnancy_delivery_days =  0
 
 
     //Superior column that have a background color, so the space behind top bar is filed with color
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(MaterialTheme.colorScheme.tertiary)) {
+        .background(MaterialTheme.colorScheme.surface)) {
         //Secondary column that have a padding so as top bar is not sticky to the left and right edges
         Column(
             modifier = Modifier
@@ -190,7 +193,7 @@ fun PregnantPalScreen(
                 title = {
                     Text(
                         text = stringResource(id = R.string.app_name),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                        color = MaterialTheme.colorScheme.primaryContainer
                     )
                 },
                 navigationIcon = {
@@ -198,12 +201,12 @@ fun PregnantPalScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "Arrow Back",
-                            tint = MaterialTheme.colorScheme.onTertiaryContainer
+                            tint = MaterialTheme.colorScheme.primaryContainer
                         )
                     }
                 },
                 elevation = 5.dp,
-                backgroundColor = (MaterialTheme.colorScheme.onTertiary),
+                backgroundColor = (MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier.clip(shape = RoundedCornerShape(15.dp))
             )
 
@@ -216,11 +219,11 @@ fun PregnantPalScreen(
                 // #1 row of data - Pregnancy type and dating
                 item {
                     Card(
-                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     ) {
                         Text(
                             text = "Basic Information",
@@ -230,7 +233,7 @@ fun PregnantPalScreen(
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Light,
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Column(
                             modifier = Modifier
@@ -253,23 +256,24 @@ fun PregnantPalScreen(
                                     onValueChange = {
                                         singleton_or_twins_index.value = pregnancyTypes.indexOf(it)
                                     },
-                                    label = { Text(text = "Pregnancy Type", color = MaterialTheme.colorScheme.onTertiaryContainer)},
+                                    label = { Text(text = "Pregnancy Type", color = MaterialTheme.colorScheme.onPrimaryContainer)},
                                     trailingIcon = {
                                         ExposedDropdownMenuDefaults.TrailingIcon(
                                             expanded = expanded.value
                                         )
                                     },
                                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        trailingIconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedTrailingIconColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        trailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
                                     ),
                                     readOnly = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(
                                         imeAction = ImeAction.Done,
                                         keyboardType = KeyboardType.Text
-                                    )
+                                    ),
                                 )
                                 ExposedDropdownMenu(
                                     expanded = expanded.value,
@@ -297,7 +301,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Fetal crown-rump length [mm]",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
 
 
@@ -315,7 +319,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Examination date [dd-mm-yyyy]",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                         }
                     }
@@ -324,17 +328,17 @@ fun PregnantPalScreen(
                 item {
                     Divider(
                         modifier = Modifier.padding(10.dp),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 // #2 row of data - Maternal characteristics
                 item {
                     Card(
-                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     ) {
                         Text(
                             text = "Maternal characteristics",
@@ -344,7 +348,7 @@ fun PregnantPalScreen(
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Light,
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Column(
                             modifier = Modifier
@@ -366,7 +370,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Expected date of birth [dd-mm-yyyy]",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
 
                             //Height
@@ -379,7 +383,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Height [cm]",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
 
                             //Weight
@@ -392,7 +396,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Weight [kg]",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
 
                             //Racial origin
@@ -409,17 +413,17 @@ fun PregnantPalScreen(
                                     onValueChange = {
                                         racial_origin_index.value = racialOrigin.indexOf(it)
                                     },
-                                    label = { Text(text = "Racial origin", color = MaterialTheme.colorScheme.onTertiaryContainer) },
+                                    label = { Text(text = "Racial origin", color = MaterialTheme.colorScheme.onPrimaryContainer) },
                                     trailingIcon = {
                                         ExposedDropdownMenuDefaults.TrailingIcon(
                                             expanded = expandedRacial.value
                                         )
                                     },
                                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        trailingIconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedTrailingIconColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        trailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                     readOnly = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -443,7 +447,7 @@ fun PregnantPalScreen(
                             }
 
                             //Smoking during pregnancy
-                            Text(text = "Have you smoked during pregnancy?", color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Have you smoked during pregnancy?", color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Checkbox(
                                     checked = smoking.value == 1L,
@@ -452,10 +456,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = smoking.value == 2L,
@@ -464,16 +469,16 @@ fun PregnantPalScreen(
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                             //Mother of the patient had PE
 
-                            Text(text = "Have your mather had PE?", color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Have your mather had PE?", color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Checkbox(
                                     checked = previous_preeclampsia.value == 1L,
@@ -482,10 +487,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes", color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes", color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = previous_preeclampsia.value == 2L,
@@ -494,11 +500,11 @@ fun PregnantPalScreen(
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp)
                                 )
-                                Text(text = "No", color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No", color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
 
@@ -516,17 +522,17 @@ fun PregnantPalScreen(
                                     onValueChange = {
                                         conception_method_index.value = conceptionList.indexOf(it)
                                     },
-                                    label = { Text(text = "Conception method", color = MaterialTheme.colorScheme.onTertiaryContainer) },
+                                    label = { Text(text = "Conception method", color = MaterialTheme.colorScheme.onPrimaryContainer) },
                                     trailingIcon = {
                                         ExposedDropdownMenuDefaults.TrailingIcon(
                                             expanded = expandedConception.value
                                         )
                                     },
                                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedBorderColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        trailingIconColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedTrailingIconColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        trailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        focusedTrailingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                     readOnly = true,
                                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -557,17 +563,17 @@ fun PregnantPalScreen(
                 item {
                     Divider(
                         modifier = Modifier.padding(10.dp),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 // #3 row of data - Medical history
                 item {
                     Card(
-                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     ) {
                         Text(
                             text = "Medical history",
@@ -577,7 +583,7 @@ fun PregnantPalScreen(
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Light,
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Column(
                             modifier = Modifier
@@ -587,7 +593,7 @@ fun PregnantPalScreen(
                         ) {
 
                             //Chronic hypertension
-                            Text(text = "Do you have chronic hypertension?", color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Do you have chronic hypertension?", color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -600,10 +606,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = ch_hipertension.value == 2L,
@@ -613,14 +620,14 @@ fun PregnantPalScreen(
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                             //Diabetes type I
-                            Text(text = "Do you have diabetes type I?",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Do you have diabetes type I?",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -633,10 +640,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = diabetes_type_1.value == 2L,
@@ -646,14 +654,14 @@ fun PregnantPalScreen(
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                             //Diabetes type II
-                            Text(text = "Do you have diabetes type II?",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Do you have diabetes type II?",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -666,10 +674,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = diabetes_type_2.value == 2L,
@@ -679,76 +688,78 @@ fun PregnantPalScreen(
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                             //Systemic lupus erythematosus
-                            Text(text = "Do you have lupus erythematosus?",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Do you have lupus erythematosus?",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 Checkbox(
-                                    checked = SLE.value == 1L,
+                                    checked = sle.value == 1L,
                                     onCheckedChange = {
-                                        SLE.value = if(it) 1 else 2
+                                        sle.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = SLE.value == 2L,
+                                    checked = sle.value == 2L,
                                     onCheckedChange = {
-                                        SLE.value = if(it) 2 else 1
+                                        sle.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                             //Anti-phospholipid syndrome
-                            Text(text = "Do you have anti-phospholipid syndrome?",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Do you have anti-phospholipid syndrome?",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp)
                             ) {
                                 Checkbox(
-                                    checked = APS.value == 1L,
+                                    checked = aps.value == 1L,
                                     onCheckedChange = {
-                                        APS.value = if(it) 1 else 2
+                                        aps.value = if(it) 1 else 2
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = APS.value == 2L,
+                                    checked = aps.value == 2L,
                                     onCheckedChange = {
-                                        APS.value = if(it) 2 else 1
+                                        aps.value = if(it) 2 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                         }
@@ -758,17 +769,17 @@ fun PregnantPalScreen(
                 item {
                     Divider(
                         modifier = Modifier.padding(10.dp),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 // #4 row of data - Obstetric history
                 item {
                     Card(
-                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     ) {
                         Text(
                             text = "Obstetric history",
@@ -778,7 +789,7 @@ fun PregnantPalScreen(
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Light,
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Column(
                             modifier = Modifier
@@ -788,7 +799,7 @@ fun PregnantPalScreen(
                         ) {
 
                             //Nulliparous or Parous
-                            Text(text = "Did you have at lest one pregnancy in less than 24 weeks?",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Did you have at lest one pregnancy in less than 24 weeks?",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -801,10 +812,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = nulliparous.value == 2L,
@@ -814,10 +826,10 @@ fun PregnantPalScreen(
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                         }
@@ -827,17 +839,17 @@ fun PregnantPalScreen(
                 item {
                     Divider(
                         modifier = Modifier.padding(10.dp),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 // #5 row of data - Biophysical measurements
                 item{
                     Card(
-                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     ) {
                         Text(
                             text = "Biophysical measurements",
@@ -847,7 +859,7 @@ fun PregnantPalScreen(
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Light,
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Column(
                             modifier = Modifier
@@ -858,34 +870,34 @@ fun PregnantPalScreen(
 
                             //Mean arterial pressure
                             textInput(
-                                text = MAP.value,
+                                text = map.value,
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp),
                                 onTextChange = {
                                     if (it.all { char ->
                                             char.isDigit() || char == '.'
                                         })
-                                        MAP.value = it.take(5)
+                                        map.value = it.take(5)
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Mean arterial pressure [mm]",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
 
                             //Mean uterine artery
                             textInput(
-                                text = UTAPI.value,
+                                text = utapi.value,
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp),
                                 onTextChange = {
                                     if (it.all { char ->
                                             char.isDigit() || char == '.'
                                         })
-                                        UTAPI.value = it.take(5)
+                                        utapi.value = it.take(5)
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Mean uterine artery PI",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
 
                             //Date of measurements
@@ -901,7 +913,7 @@ fun PregnantPalScreen(
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Date of last measurements [dd-mm-yyyy]",
-                                textColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         }
                     }
@@ -910,17 +922,17 @@ fun PregnantPalScreen(
                 item {
                     Divider(
                         modifier = Modifier.padding(10.dp),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
                 // #6 row of data - Biochemical measurements
                 item{
                     Card(
-                        backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        backgroundColor = MaterialTheme.colorScheme.primaryContainer,
                         modifier = Modifier.padding(10.dp),
                         elevation = 10.dp,
                         shape = RoundedCornerShape(corner = CornerSize(10.dp)),
-                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onTertiaryContainer)
+                        border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onPrimaryContainer)
                     ) {
                         Text(
                             text = "Biochemical measurements",
@@ -930,7 +942,7 @@ fun PregnantPalScreen(
                             textAlign = TextAlign.Center,
                             fontWeight = FontWeight.Light,
                             fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Column(
                             modifier = Modifier
@@ -940,7 +952,7 @@ fun PregnantPalScreen(
                         ) {
 
                             //PLGF
-                            Text(text = "Did you last measurements included PLGF serum?",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Did you last measurements included PLGF serum?",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -953,10 +965,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = plgf.value == 2L,
@@ -966,14 +979,14 @@ fun PregnantPalScreen(
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                             //PAPP-A
-                            Text(text = "Did you last measurements included PAPP-A serum?",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                            Text(text = "Did you last measurements included PAPP-A serum?",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             Row(
                                 verticalAlignment = Alignment.CenterVertically,
                                 modifier = Modifier
@@ -986,10 +999,11 @@ fun PregnantPalScreen(
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        checkedColor = MaterialTheme.colorScheme.inversePrimary,
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                 )
-                                Text(text = "Yes",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
                                     checked = pappa.value == 2L,
@@ -998,20 +1012,27 @@ fun PregnantPalScreen(
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
-                                        uncheckedColor = MaterialTheme.colorScheme.onTertiaryContainer
+                                        uncheckedColor = MaterialTheme.colorScheme.onPrimaryContainer
                                     ),
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                 )
-                                Text(text = "No",color = MaterialTheme.colorScheme.onTertiaryContainer)
+                                Text(text = "No",color = MaterialTheme.colorScheme.onPrimaryContainer)
                             }
 
                         }
                     }
                 }
+                //Divider
+                item {
+                    Divider(
+                        modifier = Modifier.padding(10.dp),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                }
                 // Button for saving
                 item {
                     addButton(
-                        modifier = Modifier.padding(20.dp),
+                        modifier = Modifier.padding(30.dp),
                         text = "Save data",
                         onClick = {
                             if(
@@ -1024,7 +1045,7 @@ fun PregnantPalScreen(
                                 weight.value.isNotEmpty() &&
                                 racial_origin.value.isNotEmpty() &&
                                 conception_method.value.isNotEmpty() &&
-                                MAP.value.isNotEmpty() &&
+                                map.value.isNotEmpty() &&
                                 dateOfBiophysicalMeasurements.value.isNotEmpty()
                             ){
                                 saveDataToJson(
@@ -1043,20 +1064,21 @@ fun PregnantPalScreen(
                                         ch_hipertension = ch_hipertension.value,
                                         diabetes_type_1 = diabetes_type_1.value,
                                         diabetes_type_2 = diabetes_type_2.value,
-                                        SLE = SLE .value,
-                                        APS = APS.value,
+                                        sle = sle .value,
+                                        aps = aps.value,
                                         nulliparous = nulliparous.value,
                                         last_pregnancy_pe = last_pregnancy_pe,
                                         last_pregnancy_delivery_weeks = last_pregnancy_delivery_weeks,
                                         last_pregnancy_delivery_days =  last_pregnancy_delivery_days,
-                                        MAP =  MAP.value.toFloat(),
+                                        map =  map.value.toFloat(),
                                         dateOfBiophysicalMeasurements =  LocalDate.parse(dateOfBiophysicalMeasurements.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
                                         plgf =  plgf.value,
                                         pappa = pappa.value,
-                                        ga_age = ga_age.toFloat(),
+                                        ga_age = ga_age.toLong(),
                                         inter_pregancy_interval = inter_pregancy_interval,
-                                        UTAPI = UTAPI.value.toFloat()
+                                        utapi = utapi.value.toFloat()
                                     ))
+                                navController.navigate(route = Screens.MainScreen.name)
                             }else{
                                 Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
                             }
@@ -1088,19 +1110,40 @@ private fun saveDataToJson(context: Context, data: MaternalData) {
 
     // Get the downloads folder path
     val folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-    val filePath = "$folder/data.json"
 
     // Create the directory if it doesn't exist
     if (!folder.exists()) {
         folder.mkdir()
     }
 
+    // Find the next available file name
+    var i = 1
+    var file = File(folder, "data$i.json")
+    while (file.exists()) {
+        i++
+        file = File(folder, "data$i.json")
+    }
+
     // Write data to the file
     try {
-        File(filePath).writeText(json)
+        file.writeText(json)
         Toast.makeText(context, "Data saved to file successfully!", Toast.LENGTH_SHORT).show()
     } catch (e: Exception) {
         Toast.makeText(context, "Error saving data to file!", Toast.LENGTH_SHORT).show()
         e.printStackTrace()
     }
+
+    // Upload the file to Firebase Storage
+    val storageRef = Firebase.storage.reference
+    val uploadTask = storageRef.child(file.name).putFile(file.toUri())
+
+    uploadTask.addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            Toast.makeText(context, "File uploaded to Firebase Storage successfully!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Error uploading file to Firebase Storage!", Toast.LENGTH_SHORT).show()
+            task.exception?.printStackTrace()
+        }
+    }
 }
+
