@@ -42,10 +42,14 @@ import com.example.pregnantpal.model.MaternalData
 import com.example.pregnantpal.components.addButton
 import com.example.pregnantpal.components.textInput
 import com.example.pregnantpal.R
+import com.example.pregnantpal.ml.ModelDuzy
+import com.example.pregnantpal.ml.ModelMaly
 import com.example.pregnantpal.screen.Navigation.Screens
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -1078,6 +1082,26 @@ fun PregnantPalScreen(
                                         inter_pregancy_interval = inter_pregancy_interval,
                                         utapi = utapi.value.toFloat()
                                     ))
+                                Predict(context, singleton_or_twins = singleton_or_twins_index.value + 1L,
+                                    fetus_1 = fetus_1.value.toLong(),
+                                    fetus_2 = fetus_2.value.toLong(),
+                                    date_of_birth = LocalDate.parse(dayOfBirth.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
+                                    height = height.value.toLong(),
+                                    weight = weight.value.toLong(),
+                                    racial_origin = racial_origin_index.value + 1L,
+                                    smoking = smoking.value,
+                                    previous_preeclampsia = previous_preeclampsia.value,
+                                    conception_method =conception_method_index.value +1L,
+                                    ch_hipertension = ch_hipertension.value,
+                                    diabetes_type_1 = diabetes_type_1.value,
+                                    diabetes_type_2 = diabetes_type_2.value,
+                                    sle = sle .value,
+                                    aps = aps.value,
+                                    nulliparous = nulliparous.value,
+                                    map =  map.value.toFloat(),
+                                    utapi = utapi.value.toFloat(),
+                                    ga_age = ga_age
+                                )
                                 navController.navigate(route = Screens.MainScreen.name)
                             }else{
                                 Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
@@ -1125,13 +1149,13 @@ private fun saveDataToJson(context: Context, data: MaternalData) {
     }
 
     // Write data to the file
-    try {
-        file.writeText(json)
-        Toast.makeText(context, "Data saved to file successfully!", Toast.LENGTH_SHORT).show()
-    } catch (e: Exception) {
-        Toast.makeText(context, "Error saving data to file!", Toast.LENGTH_SHORT).show()
-        e.printStackTrace()
-    }
+//    try {
+//        file.writeText(json)
+//        Toast.makeText(context, "Data saved to file successfully!", Toast.LENGTH_SHORT).show()
+//    } catch (e: Exception) {
+//        Toast.makeText(context, "Error saving data to file!", Toast.LENGTH_SHORT).show()
+//        e.printStackTrace()
+//    }
 
     // Upload the file to Firebase Storage
     val storageRef = Firebase.storage.reference
@@ -1144,6 +1168,46 @@ private fun saveDataToJson(context: Context, data: MaternalData) {
             Toast.makeText(context, "Error uploading file to Firebase Storage!", Toast.LENGTH_SHORT).show()
             task.exception?.printStackTrace()
         }
+    }
+}
+private fun Predict(context: Context, singleton_or_twins: Long,
+                    fetus_1: Long,
+                    fetus_2: Long,
+                    date_of_birth: Long,
+                    height: Long,
+                    weight: Long,
+                    racial_origin: Long,
+                    smoking: Long,
+                    previous_preeclampsia: Long,
+                    conception_method: Long,
+                    ch_hipertension: Long,
+                    diabetes_type_1: Long,
+                    diabetes_type_2: Long,
+                    sle: Long,
+                    aps: Long,
+                    nulliparous: Long,
+                    map: Float,
+                    utapi: Float,
+                    ga_age: Float){
+    val model = ModelDuzy.newInstance(context)
+
+// Creates inputs for reference.
+    val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 19), DataType.FLOAT32)
+    inputFeature0.loadArray(floatArrayOf(singleton_or_twins.toFloat(),fetus_1.toFloat(),fetus_2.toFloat(),date_of_birth.toFloat(),height.toFloat(),
+    weight.toFloat(),racial_origin.toFloat(),smoking.toFloat(),previous_preeclampsia.toFloat(),conception_method.toFloat(),ch_hipertension.toFloat(),
+    diabetes_type_1.toFloat(),diabetes_type_2.toFloat(),sle.toFloat(),aps.toFloat(),nulliparous.toFloat(),map,utapi,ga_age))
+
+// Runs model inference and gets result.
+    val outputs = model.process(inputFeature0)
+    val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+    val pred = outputFeature0.floatArray
+// Releases model resources if no longer used.
+    model.close()
+    try {
+        Toast.makeText(context, "Prediction: " +pred[0], Toast.LENGTH_SHORT).show()
+    } catch (e: Exception) {
+        Toast.makeText(context, "Error predicting!", Toast.LENGTH_SHORT).show()
+        e.printStackTrace()
     }
 }
 
