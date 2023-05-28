@@ -9,17 +9,18 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.airbnb.lottie.compose.*
 import com.example.pregnantpal.R
 import com.example.pregnantpal.screen.Navigation.Screens
 
@@ -29,7 +30,11 @@ import com.example.pregnantpal.screen.Navigation.Screens
 fun MainScreen(
     navController: NavController,
 ){
-
+    val composition= rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.home_lottie))
+    val progress by animateLottieCompositionAsState(
+        composition = composition.value,
+        iterations = LottieConstants.IterateForever
+    )
     //Scaffold provides basic layout structure
     Scaffold(
         topBar = {
@@ -102,7 +107,7 @@ fun MainScreen(
                 Tile(
                     title = "View Results",
                     icon = Icons.Filled.AccountBox,
-                    onClick = { /* navigate to results screen */ }
+                    onClick = { navController.navigate(route = Screens.ResultsScreen.name) }
                 )
 
                 Tile(
@@ -114,18 +119,15 @@ fun MainScreen(
 
             Spacer(modifier = Modifier.padding(20.dp))
 
-            Icon(
-                painterResource(id = R.drawable.hpw),
-                contentDescription = "Happy Pregnant Women",
-                tint = Color.Unspecified,
-                modifier = Modifier
-                    .size(500.dp)
-                    .padding(top = 20.dp, bottom = 0.dp)
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center)
-                    .height(500.dp)
-                    .wrapContentHeight(Alignment.Bottom)
-            )
+            Box(modifier = Modifier
+                .fillMaxSize()
+            ){
+                    LottieAnimation(
+                        modifier = Modifier.fillMaxSize(),
+                        composition = composition.value,
+                        progress = {progress}
+                    )
+            }
 
         }
     }

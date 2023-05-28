@@ -18,7 +18,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -43,10 +42,17 @@ import com.example.pregnantpal.components.addButton
 import com.example.pregnantpal.components.textInput
 import com.example.pregnantpal.R
 import com.example.pregnantpal.screen.Navigation.Screens
+import com.example.pregnantpal.ml.ModelDuzy
+import com.example.pregnantpal.ml.ModelMaly
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import com.google.gson.Gson
 import java.io.File
+import java.time.DateTimeException
+import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -54,11 +60,10 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PregnantPalScreen(
-    navController: NavController
+    navController: NavController,
 ){
 
     val context = LocalContext.current
-
 
     val expanded = remember {
         mutableStateOf(false)
@@ -171,12 +176,15 @@ fun PregnantPalScreen(
         mutableStateOf(2L)
     }
 
-    val ga_age = 30f
-    val inter_pregancy_interval = 0
+    val ga_age = 11f
 
+    val inter_pregancy_interval = 0
     val last_pregnancy_pe = 2
     val last_pregnancy_delivery_weeks = 40
     val last_pregnancy_delivery_days =  0
+
+    val isDataValid = remember { mutableStateOf(true) }
+    val checkedState = remember { mutableStateOf(true) }
 
 
     //Superior column that have a background color, so the space behind top bar is filed with color
@@ -316,6 +324,25 @@ fun PregnantPalScreen(
                                             char.isDigit() || char == '-'
                                         })
                                         examinationDate.value = it.take(10)
+
+                                    try {
+                                        if (examinationDate.value.length == 10) {
+                                            val dateParts = examinationDate.value.split("-")
+                                            val day = dateParts.getOrNull(0)?.toIntOrNull()
+                                            val month = dateParts.getOrNull(1)?.toIntOrNull()
+                                            val year = dateParts.getOrNull(2)?.toIntOrNull()
+
+                                            if (day == null || month == null || year == null || !isValidDate(day,month,year)) {
+                                                Toast.makeText(context, "Invalid Examination Date", Toast.LENGTH_SHORT).show()
+                                                isDataValid.value = false
+                                            }else{
+                                                isDataValid.value = true
+                                            }
+                                        }
+                                    }catch (e: DateTimeException) {
+                                        isDataValid.value = false
+                                    }
+
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Examination date [dd-mm-yyyy]",
@@ -367,6 +394,24 @@ fun PregnantPalScreen(
                                             char.isDigit() || char == '-'
                                         })
                                         dayOfBirth.value = it.take(10)
+
+                                    try {
+                                        if (dayOfBirth.value.length == 10) {
+                                            val dateParts = dayOfBirth.value.split("-")
+                                            val day = dateParts.getOrNull(0)?.toIntOrNull()
+                                            val month = dateParts.getOrNull(1)?.toIntOrNull()
+                                            val year = dateParts.getOrNull(2)?.toIntOrNull()
+
+                                            if (day == null || month == null || year == null || !isValidDate(day,month,year)) {
+                                                Toast.makeText(context, "Invalid Day Of Birth Date", Toast.LENGTH_SHORT).show()
+                                                isDataValid.value = false
+                                            }else{
+                                                isDataValid.value = true
+                                            }
+                                        }
+                                    }catch (e: DateTimeException) {
+                                        isDataValid.value = false
+                                    }
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Expected date of birth [dd-mm-yyyy]",
@@ -379,7 +424,7 @@ fun PregnantPalScreen(
                                 modifier = Modifier
                                     .padding(top = 10.dp, bottom = 10.dp),
                                 onTextChange = {
-                                        height.value = it
+                                    height.value = it
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Height [cm]",
@@ -910,6 +955,24 @@ fun PregnantPalScreen(
                                             char.isDigit() || char == '-'
                                         })
                                         dateOfBiophysicalMeasurements.value = it.take(10)
+
+                                    try {
+                                        if (dateOfBiophysicalMeasurements.value.length == 10) {
+                                            val dateParts = examinationDate.value.split("-")
+                                            val day = dateParts.getOrNull(0)?.toIntOrNull()
+                                            val month = dateParts.getOrNull(1)?.toIntOrNull()
+                                            val year = dateParts.getOrNull(2)?.toIntOrNull()
+
+                                            if (day == null || month == null || year == null || !isValidDate(day,month,year)) {
+                                                Toast.makeText(context, "Invalid Biophysical Measurements Date", Toast.LENGTH_SHORT).show()
+                                                isDataValid.value = false
+                                            }else{
+                                                isDataValid.value = true
+                                            }
+                                        }
+                                    }catch (e: DateTimeException) {
+                                        isDataValid.value = false
+                                    }
                                 },
                                 keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                                 label = "Date of last measurements [dd-mm-yyyy]",
@@ -1029,64 +1092,106 @@ fun PregnantPalScreen(
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 }
-                // Button for saving
+                // Buttons for saving
                 item {
-                    addButton(
-                        modifier = Modifier.padding(30.dp),
-                        text = "Save data",
-                        onClick = {
-                            if(
-                                singleton_or_twins.value.isNotEmpty() &&
-                                weight.value.isNotEmpty() &&
-                                height.value.isNotEmpty() &&
-                                fetus_1.value.isNotEmpty() &&
-                                examinationDate.value.isNotEmpty() &&
-                                dayOfBirth.value.isNotEmpty() &&
-                                weight.value.isNotEmpty() &&
-                                racial_origin.value.isNotEmpty() &&
-                                conception_method.value.isNotEmpty() &&
-                                map.value.isNotEmpty() &&
-                                dateOfBiophysicalMeasurements.value.isNotEmpty()
-                            ){
-                                saveDataToJson(
-                                    context, data = MaternalData(
-                                        singleton_or_twins = singleton_or_twins_index.value + 1L,
-                                        fetus_1 = fetus_1.value.toLong(),
-                                        fetus_2 = fetus_2.value.toLong(),
-                                        examinationDate = LocalDate.parse(examinationDate.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
-                                        dayOfBirth = LocalDate.parse(dayOfBirth.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
-                                        height = height.value.toLong(),
-                                        weight = weight.value.toLong(),
-                                        racial_origin = racial_origin_index.value + 1L,
-                                        smoking = smoking.value,
-                                        previous_preeclampsia = previous_preeclampsia.value,
-                                        conception_method =conception_method_index.value +1L,
-                                        ch_hipertension = ch_hipertension.value,
-                                        diabetes_type_1 = diabetes_type_1.value,
-                                        diabetes_type_2 = diabetes_type_2.value,
-                                        sle = sle .value,
-                                        aps = aps.value,
-                                        nulliparous = nulliparous.value,
-                                        last_pregnancy_pe = last_pregnancy_pe,
-                                        last_pregnancy_delivery_weeks = last_pregnancy_delivery_weeks,
-                                        last_pregnancy_delivery_days =  last_pregnancy_delivery_days,
-                                        map =  map.value.toFloat(),
-                                        dateOfBiophysicalMeasurements =  LocalDate.parse(dateOfBiophysicalMeasurements.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
-                                        plgf =  plgf.value,
-                                        pappa = pappa.value,
-                                        ga_age = ga_age.toLong(),
-                                        inter_pregancy_interval = inter_pregancy_interval,
-                                        utapi = utapi.value.toFloat()
-                                    ))
-                                navController.navigate(route = Screens.MainScreen.name)
-                            }else{
-                                Toast.makeText(context, "Data not saved, complete all data", Toast.LENGTH_SHORT).show()
-                            }
-
+                    Row(Modifier.fillMaxWidth().padding(16.dp)) {
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Switch(
+                                checked = checkedState.value,
+                                onCheckedChange = { checkedState.value = it }
+                            )
+                            Text(fontSize = 18.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                text = if (checkedState.value) "Cloud upload is ON" else "Cloud upload is OFF")
                         }
-                    )
-                }
+                        Column(
+                            modifier = Modifier.weight(1f),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            addButton(
+                                modifier = Modifier.padding(30.dp),
+                                text = "Save data",
+                                onClick = {
+                                    if(
+                                        isDataValid.value &&
+                                        weight.value.isNotEmpty() &&
+                                        weight.value <= 30.toString() || weight.value >= 200.toString() &&
+                                        height.value.isNotEmpty() &&
+                                        height.value <= 55.toString() || height.value >= 270.toString() &&
+                                        fetus_1.value.isNotEmpty() &&
+                                        weight.value.isNotEmpty() &&
+                                        racial_origin.value.isNotEmpty() &&
+                                        conception_method.value.isNotEmpty() &&
+                                        map.value.isNotEmpty()
+                                    ){
+                                        saveDataToJson(
+                                            context, data = MaternalData(
+                                                singleton_or_twins = singleton_or_twins_index.value + 1L,
+                                                fetus_1 = fetus_1.value.toLong(),
+                                                fetus_2 = fetus_2.value.toLong(),
+                                                examinationDate = LocalDate.parse(examinationDate.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
+                                                dayOfBirth = LocalDate.parse(dayOfBirth.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
+                                                height = height.value.toLong(),
+                                                weight = weight.value.toLong(),
+                                                racial_origin = racial_origin_index.value + 1L,
+                                                smoking = smoking.value,
+                                                previous_preeclampsia = previous_preeclampsia.value,
+                                                conception_method =conception_method_index.value +1L,
+                                                ch_hipertension = ch_hipertension.value,
+                                                diabetes_type_1 = diabetes_type_1.value,
+                                                diabetes_type_2 = diabetes_type_2.value,
+                                                sle = sle .value,
+                                                aps = aps.value,
+                                                nulliparous = nulliparous.value,
+                                                last_pregnancy_pe = last_pregnancy_pe,
+                                                last_pregnancy_delivery_weeks = last_pregnancy_delivery_weeks,
+                                                last_pregnancy_delivery_days =  last_pregnancy_delivery_days,
+                                                map =  map.value.toFloat(),
+                                                dateOfBiophysicalMeasurements =  LocalDate.parse(dateOfBiophysicalMeasurements.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
+                                                plgf =  plgf.value,
+                                                pappa = pappa.value,
+                                                ga_age = ga_age.toLong(),
+                                                inter_pregancy_interval = inter_pregancy_interval,
+                                                utapi = utapi.value.toFloat()
+                                            ), checkedState =checkedState.value)
+                                        Predict(context,
+                                            singleton_or_twins = singleton_or_twins_index.value + 1L,
+                                            fetus_1 = fetus_1.value.toLong(),
+                                            fetus_2 = fetus_2.value.toLong(),
+                                            date_of_birth = LocalDate.parse(dayOfBirth.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toLong(),
+                                            height = height.value.toLong(),
+                                            weight = weight.value.toLong(),
+                                            racial_origin = racial_origin_index.value + 1L,
+                                            smoking = smoking.value,
+                                            previous_preeclampsia = previous_preeclampsia.value,
+                                            conception_method =conception_method_index.value +1L,
+                                            ch_hipertension = ch_hipertension.value,
+                                            diabetes_type_1 = diabetes_type_1.value,
+                                            diabetes_type_2 = diabetes_type_2.value,
+                                            sle = sle .value,
+                                            aps = aps.value,
+                                            nulliparous = nulliparous.value,
+                                            map =  map.value.toFloat(),
+                                            utapi = utapi.value.toFloat(),
+                                            ga_age = ga_age
+                                        )
 
+                                        navController.navigate(route = Screens.MainScreen.name)
+
+                                    }else{
+                                        Toast.makeText(context, "Data not saved, check correctness of all data", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
             }
 
         }
@@ -1094,7 +1199,8 @@ fun PregnantPalScreen(
 
 }
 
-private fun saveDataToJson(context: Context, data: MaternalData) {
+// Function to save data to a JSON file
+private fun saveDataToJson(context: Context, data: MaternalData, checkedState: Boolean) {
     val json = Gson().toJson(data)
 
     // Request write external storage permission
@@ -1128,11 +1234,18 @@ private fun saveDataToJson(context: Context, data: MaternalData) {
     try {
         file.writeText(json)
         Toast.makeText(context, "Data saved to file successfully!", Toast.LENGTH_SHORT).show()
+        // Call the function to send the file to Firebase Storage
+        if(checkedState) {
+            sendFileToFirebaseStorage(context, file)
+        }
     } catch (e: Exception) {
         Toast.makeText(context, "Error saving data to file!", Toast.LENGTH_SHORT).show()
         e.printStackTrace()
     }
+}
 
+// Function to send a file to Firebase Storage
+private fun sendFileToFirebaseStorage(context: Context, file: File) {
     // Upload the file to Firebase Storage
     val storageRef = Firebase.storage.reference
     val uploadTask = storageRef.child(file.name).putFile(file.toUri())
@@ -1145,5 +1258,73 @@ private fun saveDataToJson(context: Context, data: MaternalData) {
             task.exception?.printStackTrace()
         }
     }
+}
+
+fun isValidDate(day: Int?,month: Int?,year: Int?): Boolean {
+    return day != null && day >= 1 && day <= 31 && month != null && month >= 1 && month <= 12 && year != null && year >= 1900 && year <= 2100
+}
+
+//Function that predict whether pregnancy is going according to plan
+private fun Predict(
+    context: Context,
+    singleton_or_twins: Long,
+    fetus_1: Long,
+    fetus_2: Long,
+    date_of_birth: Long,
+    height: Long,
+    weight: Long,
+    racial_origin: Long,
+    smoking: Long,
+    previous_preeclampsia: Long,
+    conception_method: Long,
+    ch_hipertension: Long,
+    diabetes_type_1: Long,
+    diabetes_type_2: Long,
+    sle: Long,
+    aps: Long,
+    nulliparous: Long,
+    map: Float, utapi: Float,
+    ga_age: Float): Float {
+    val model = ModelDuzy.newInstance(context)
+    val inputFeature0 = TensorBuffer.createFixedSize(intArrayOf(1, 19), DataType.FLOAT32)
+    inputFeature0.loadArray(
+        floatArrayOf(
+            singleton_or_twins.toFloat(), fetus_1.toFloat(), fetus_2.toFloat(),
+            date_of_birth.toFloat(), height.toFloat(), weight.toFloat(), racial_origin.toFloat(),
+            smoking.toFloat(), previous_preeclampsia.toFloat(), conception_method.toFloat(),
+            ch_hipertension.toFloat(), diabetes_type_1.toFloat(), diabetes_type_2.toFloat(),
+            sle.toFloat(), aps.toFloat(), nulliparous.toFloat(), map, utapi, ga_age
+        )
+    )
+    val outputs = model.process(inputFeature0)
+    val outputFeature0 = outputs.outputFeature0AsTensorBuffer
+    val pred = outputFeature0.floatArray
+    model.close()
+
+    val result = pred[0]
+
+    // Store the result in Firestore for the signed-in user
+    val currentUser = FirebaseAuth.getInstance().currentUser
+    currentUser?.let { user ->
+        val uid = user.uid
+        val firestore = FirebaseFirestore.getInstance()
+        val predictionData: MutableMap<String, Any> = HashMap()
+        predictionData["result"] = result
+        // Include other relevant fields here
+
+        firestore.collection("users").document(uid)
+            .update(predictionData)
+            .addOnSuccessListener {
+                // Data successfully updated in Firestore
+                Toast.makeText(context, "Prediction result stored in Firestore", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                // Handle any errors that occurred during updating
+                Toast.makeText(context, "Failed to store prediction result in Firestore", Toast.LENGTH_SHORT).show()
+                e.printStackTrace()
+            }
+    }
+
+    return result
 }
 

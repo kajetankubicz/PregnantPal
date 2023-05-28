@@ -1,5 +1,6 @@
 package com.example.pregnantpal.screen.Navigation
 
+import ResultsScreen
 import SettingsScreen
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -67,6 +68,10 @@ fun Navigation(
 
         composable(route = Screens.MyAccountScreen.name){
             MyAccountScreen(navController = navController)
+        }
+
+        composable(route = Screens.ResultsScreen.name){
+            ResultsScreen(navController = navController)
         }
 
         composable(route = Screens.SignInScreen.name){

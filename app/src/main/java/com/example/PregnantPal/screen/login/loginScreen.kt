@@ -2,6 +2,7 @@ package com.example.pregnantpal.screen.login
 
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -19,6 +20,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.getValue
+import com.airbnb.lottie.compose.*
+import com.example.pregnantpal.R
 
 //Composable function that created login screen
 //LoginViewModel menages state of login screen
@@ -34,6 +38,16 @@ fun loginScreen(
     val loginUiState = loginViewModel?.loginUiState
     val isError = loginUiState?.loginError != null
     val context = LocalContext.current
+    val compositionLight = rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.background_light))
+    val progressLight by animateLottieCompositionAsState(
+        composition = compositionLight.value,
+        iterations = LottieConstants.IterateForever
+    )
+    val compositionDark = rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.background_dark))
+    val progressDark by animateLottieCompositionAsState(
+        composition = compositionDark.value,
+        iterations = LottieConstants.IterateForever
+    )
 
     Column(
         modifier = Modifier
@@ -121,7 +135,8 @@ fun loginScreen(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colorScheme.inverseSurface,
                 contentColor = MaterialTheme.colorScheme.inverseOnSurface
-            )
+            ),
+            shape = MaterialTheme.shapes.medium
 
         ) {
             Text(
@@ -145,10 +160,12 @@ fun loginScreen(
                 colors = ButtonDefaults.outlinedButtonColors(
                     backgroundColor = MaterialTheme.colorScheme.inverseSurface,
                     contentColor = MaterialTheme.colorScheme.inverseOnSurface
-                )) {
+                ),
+                shape = MaterialTheme.shapes.medium) {
                 Text(text = "SignUp")
             }
-
+            
+            
 
         }
 
@@ -177,6 +194,25 @@ fun loginScreen(
                 }
             }
         }
+        
+        Box(modifier = Modifier
+            .fillMaxSize()
+        ){
+            if(isSystemInDarkTheme()){
+                LottieAnimation(
+                    modifier = Modifier.fillMaxSize(),
+                    composition = compositionDark.value,
+                    progress = { progressDark }
+                )
+            }else{
+                LottieAnimation(
+                    modifier = Modifier.fillMaxSize(),
+                    composition = compositionLight.value,
+                    progress = { progressLight }
+                )
+            }
+
+        }
 
     }
 }
@@ -192,7 +228,9 @@ fun SignUpScreen(
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.primaryContainer),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.primaryContainer),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Spacer(modifier = Modifier.size(20.dp))
@@ -296,7 +334,9 @@ fun SignUpScreen(
             colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colorScheme.inverseSurface,
                 contentColor = androidx.compose.material3.MaterialTheme.colorScheme.inverseOnSurface
-            )) {
+            ),
+            shape = MaterialTheme.shapes.medium
+        ) {
             Text(text = "Sign In")
         }
         Spacer(modifier = Modifier.size(16.dp))
@@ -315,7 +355,8 @@ fun SignUpScreen(
                 colors = ButtonDefaults.outlinedButtonColors(
                     backgroundColor = MaterialTheme.colorScheme.inverseSurface,
                     contentColor = MaterialTheme.colorScheme.inverseOnSurface
-                )) {
+                ),
+                shape = MaterialTheme.shapes.medium) {
                 Text(text = "Sign In")
             }
         }

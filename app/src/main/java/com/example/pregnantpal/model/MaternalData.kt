@@ -34,6 +34,6 @@ data class MaternalData(
     val pappa: Long,
     val ga_age: Long,
     val inter_pregancy_interval: Int,
-    val utapi: Float
+    val utapi: Float,
 )
 

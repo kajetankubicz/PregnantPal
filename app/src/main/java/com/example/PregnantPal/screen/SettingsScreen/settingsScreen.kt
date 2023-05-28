@@ -1,5 +1,4 @@
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -7,6 +6,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,16 +15,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.airbnb.lottie.compose.*
 import com.example.pregnantpal.R
 import com.example.pregnantpal.screen.Navigation.Screens
 import com.google.firebase.auth.FirebaseAuth
-
+import com.example.pregnantpal.screen.DetailScreen.PregnantPalScreen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SettingsScreen(
     navController: NavController,
 ) {
+
+    val composition= rememberLottieComposition(spec = LottieCompositionSpec.RawRes(R.raw.settings))
+    val progress by animateLottieCompositionAsState(
+        composition = composition.value,
+        iterations = LottieConstants.IterateForever
+    )
+
     Surface(
         color = MaterialTheme.colorScheme.surface,
         modifier = Modifier.fillMaxSize()
@@ -92,7 +100,18 @@ fun SettingsScreen(
                         fontWeight = FontWeight.Bold
                     )
                 }
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                ){
+                    LottieAnimation(
+                        modifier = Modifier.fillMaxSize(),
+                        composition = composition.value,
+                        progress = {progress}
+                    )
+                }
             }
         }
     }
 }
+
+

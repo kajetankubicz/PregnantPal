@@ -8,7 +8,8 @@ enum class Screens {
     SettingsScreen,
     PregnantPalScreen,
     AdminScreen,
-    MyAccountScreen;
+    MyAccountScreen,
+    ResultsScreen;
     //Companion object defines a function 'fromRoute'  which takes a String parameter that represent a route and return a Screen object
     companion object{
         //When expression matches the route parameter and if a match is found then the corresponding Screen object is returned
@@ -20,6 +21,7 @@ enum class Screens {
             PregnantPalScreen.name -> PregnantPalScreen
             AdminScreen.name -> AdminScreen
             MyAccountScreen.name -> MyAccountScreen
+            ResultsScreen.name -> ResultsScreen
             null -> MainScreen
             else -> throw java.lang.IllegalArgumentException("Route $route is not recognized")
         }
