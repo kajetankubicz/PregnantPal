@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
@@ -113,11 +114,11 @@ fun PregnantPalScreen(
     }
 
     val smoking = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val previous_preeclampsia = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val conceptionList = listOf("Spontaneous", "Ovulatio drugs","In vitro fertilization")
@@ -133,27 +134,27 @@ fun PregnantPalScreen(
     }
 
     val ch_hipertension = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val diabetes_type_1 = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val diabetes_type_2 = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val sle = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val aps = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val nulliparous = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val map = remember {
@@ -169,11 +170,11 @@ fun PregnantPalScreen(
     }
 
     val plgf = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val pappa = remember {
-        mutableStateOf(2L)
+        mutableStateOf(0L)
     }
 
     val ga_age = 11f
@@ -477,7 +478,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = smoking.value == 1L,
                                     onCheckedChange = {
-                                        smoking.value = if(it) 1 else 2
+                                        smoking.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -488,9 +489,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = smoking.value == 2L,
+                                    checked = smoking.value == 0L,
                                     onCheckedChange = {
-                                        smoking.value = if(it) 2 else 1
+                                        smoking.value = if(it) 0 else 1
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
@@ -508,7 +509,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = previous_preeclampsia.value == 1L,
                                     onCheckedChange = {
-                                        previous_preeclampsia.value = if(it) 1 else 2
+                                        previous_preeclampsia.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -519,9 +520,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes", color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = previous_preeclampsia.value == 2L,
+                                    checked = previous_preeclampsia.value == 0L,
                                     onCheckedChange = {
-                                        previous_preeclampsia.value = if(it) 2 else 1
+                                        previous_preeclampsia.value = if(it) 0 else 1
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
@@ -627,7 +628,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = ch_hipertension.value == 1L,
                                     onCheckedChange = {
-                                        ch_hipertension.value = if(it) 1 else 2
+                                        ch_hipertension.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -638,9 +639,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = ch_hipertension.value == 2L,
+                                    checked = ch_hipertension.value == 0L,
                                     onCheckedChange = {
-                                        ch_hipertension.value = if(it) 2 else 1
+                                        ch_hipertension.value = if(it) 0 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -661,7 +662,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = diabetes_type_1.value == 1L,
                                     onCheckedChange = {
-                                        diabetes_type_1.value = if(it) 1 else 2
+                                        diabetes_type_1.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -672,9 +673,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = diabetes_type_1.value == 2L,
+                                    checked = diabetes_type_1.value == 0L,
                                     onCheckedChange = {
-                                        diabetes_type_1.value = if(it) 2 else 1
+                                        diabetes_type_1.value = if(it) 0 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -695,7 +696,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = diabetes_type_2.value == 1L,
                                     onCheckedChange = {
-                                        diabetes_type_2.value = if(it) 1 else 2
+                                        diabetes_type_2.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -706,9 +707,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = diabetes_type_2.value == 2L,
+                                    checked = diabetes_type_2.value == 0L,
                                     onCheckedChange = {
-                                        diabetes_type_2.value = if(it) 2 else 1
+                                        diabetes_type_2.value = if(it) 0 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -729,7 +730,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = sle.value == 1L,
                                     onCheckedChange = {
-                                        sle.value = if(it) 1 else 2
+                                        sle.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -740,9 +741,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = sle.value == 2L,
+                                    checked = sle.value == 0L,
                                     onCheckedChange = {
-                                        sle.value = if(it) 2 else 1
+                                        sle.value = if(it) 0 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -763,7 +764,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = aps.value == 1L,
                                     onCheckedChange = {
-                                        aps.value = if(it) 1 else 2
+                                        aps.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -774,9 +775,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = aps.value == 2L,
+                                    checked = aps.value == 0L,
                                     onCheckedChange = {
-                                        aps.value = if(it) 2 else 1
+                                        aps.value = if(it) 0 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -833,7 +834,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = nulliparous.value == 1L,
                                     onCheckedChange = {
-                                        nulliparous.value = if(it) 1 else 2
+                                        nulliparous.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -844,9 +845,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = nulliparous.value == 2L,
+                                    checked = nulliparous.value == 0L,
                                     onCheckedChange = {
-                                        nulliparous.value = if(it) 2 else 1
+                                        nulliparous.value = if(it) 0 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -1004,7 +1005,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = plgf.value == 1L,
                                     onCheckedChange = {
-                                        plgf.value = if(it) 1 else 2
+                                        plgf.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -1015,9 +1016,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = plgf.value == 2L,
+                                    checked = plgf.value == 0L,
                                     onCheckedChange = {
-                                        plgf.value = if(it) 2 else 1
+                                        plgf.value = if(it) 0 else 1
                                     },
                                     modifier = Modifier.padding(start = 16.dp, end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -1038,7 +1039,7 @@ fun PregnantPalScreen(
                                 Checkbox(
                                     checked = pappa.value ==1L ,
                                     onCheckedChange = {
-                                        pappa.value = if(it) 1 else 2
+                                        pappa.value = if(it) 1 else 0
                                     },
                                     modifier = Modifier.padding(end = 8.dp),
                                     colors = CheckboxDefaults.colors(
@@ -1049,9 +1050,9 @@ fun PregnantPalScreen(
                                 Text(text = "Yes",color = MaterialTheme.colorScheme.onPrimaryContainer)
 
                                 Checkbox(
-                                    checked = pappa.value == 2L,
+                                    checked = pappa.value == 0L,
                                     onCheckedChange = {
-                                        pappa.value = if(it) 2 else 1
+                                        pappa.value = if(it) 0 else 1
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = MaterialTheme.colorScheme.error,
@@ -1112,7 +1113,7 @@ fun PregnantPalScreen(
                                     ){
                                         saveDataToJson(
                                             context, data = MaternalData(
-                                                singleton_or_twins = singleton_or_twins_index.value,
+                                                singleton_or_twins = singleton_or_twins_index.value+1,
                                                 fetus_1 = fetus_1.value.toInt(),
                                                 fetus_2 = fetus_2.value.toInt(),
                                                 examinationDate = LocalDate.parse(examinationDate.value, DateTimeFormatter.ofPattern("dd-MM-yyyy")).toEpochDay().toInt(),
@@ -1141,7 +1142,7 @@ fun PregnantPalScreen(
                                                 utapi = utapi.value.toFloat()
                                             ), checkedState =checkedState.value)
                                         Predict(context,
-                                            singleton_or_twins = singleton_or_twins_index.value.toLong(),
+                                            singleton_or_twins = singleton_or_twins_index.value.toLong()+1L,
                                             fetus_1 = fetus_1.value.toLong(),
                                             fetus_2 = fetus_2.value.toLong(),
                                             date_of_birth = date_of_birth.value.toLong(),
@@ -1287,7 +1288,21 @@ private fun Predict(
             sle.toFloat(), aps.toFloat(), nulliparous.toFloat(), map, utapi, ga_age
         )
     )
+    val lalala = floatArrayOf(
+        singleton_or_twins.toFloat(), fetus_1.toFloat(), fetus_2.toFloat(),
+        date_of_birth.toFloat(), height.toFloat(), weight.toFloat(), racial_origin.toFloat(),
+        smoking.toFloat(), previous_preeclampsia.toFloat(), conception_method.toFloat(),
+        ch_hipertension.toFloat(), diabetes_type_1.toFloat(), diabetes_type_2.toFloat(),
+        sle.toFloat(), aps.toFloat(), nulliparous.toFloat(), map, utapi, ga_age
+    )
     val outputs = model.process(inputFeature0)
+    for (data in lalala) {
+        val toastMessage = data.toString()
+        Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show()
+    }
+    for (data in lalala) {
+        Log.d("DataLogging", data.toString())
+    }
     val outputFeature0 = outputs.outputFeature0AsTensorBuffer
     val pred = outputFeature0.floatArray
     model.close()
@@ -1317,4 +1332,5 @@ private fun Predict(
 
     return result
 }
+
 
