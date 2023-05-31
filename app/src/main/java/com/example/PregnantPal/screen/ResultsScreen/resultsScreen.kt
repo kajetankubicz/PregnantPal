@@ -120,9 +120,9 @@ fun ResultsScreen(
                 val imageResource = when {
                     floatValue != null -> {
                         when (floatValue) {
-                            in 0.0f..0.4f -> R.drawable.red_woman
+                            in 0.0f..0.4f -> R.drawable.green_woman
                             in 0.4f..0.8f -> R.drawable.orange_woman
-                            in 0.8f..1.0f -> R.drawable.green_woman
+                            in 0.8f..1.0f -> R.drawable.red_woman
                             else -> R.drawable.splash_image
                         }
                     }
@@ -133,9 +133,9 @@ fun ResultsScreen(
                 val announcement = when {
                     floatValue != null -> {
                         when (floatValue) {
-                            in 0.0f..0.4f -> "Immediate medical attention warranted: Woman's pregnancy in danger."
+                            in 0.0f..0.4f -> "No immediate concern warranted: Woman's pregnancy in good shape."
                             in 0.4f..0.8f -> "Medical evaluation warranted: Uncertain state of woman's pregnancy."
-                            in 0.8f..1.0f -> "No immediate concern warranted: Woman's pregnancy in good shape."
+                            in 0.8f..1.0f -> "Immediate medical attention warranted: Woman's pregnancy in danger."
                             else -> "No data available"
                         }
                     }
